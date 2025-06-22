@@ -8,8 +8,9 @@ frontend:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: .amplify-hosting
     files:
-      - "**/*"
+      - '**/*'
   cache:
-    - node_modules/**/*
+    paths:
+      - node_modules/**/*
