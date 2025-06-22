@@ -8,8 +8,8 @@ frontend:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: .next    
+    baseDirectory: .next
     files:
-      - '**/*'
+      - "**/*"
   cache:
-      - node_modules/**/*
+    - node_modules/**/*
