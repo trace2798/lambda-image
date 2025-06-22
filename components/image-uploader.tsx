@@ -207,7 +207,7 @@ export function ImageUploader({
               <input {...getInputProps()} typeof="image" />
               <div className="flex flex-col items-center justify-center">
                 <p className="text-base lg:text-lg ">
-                  Drag 'n' drop image here
+                  Drag &apos;n&apos; drop image here
                 </p>
                 <Button variant="outline" className="mt-3">
                   Or click to select files
