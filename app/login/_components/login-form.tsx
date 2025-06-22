@@ -55,6 +55,7 @@ export default function LoginForm() {
       {
         onRequest: (ctx) => {
           //show loading
+          console.log('loading')
           toast.loading("Logging you in...");
         },
         onSuccess: (ctx) => {
