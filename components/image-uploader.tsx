@@ -77,60 +77,20 @@ export function ImageUploader({
           });
         }
         setUploadProgress(35);
-        const presignedRes = await fetch("/api/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          body: JSON.stringify({
-            filename: file.name,
-            workspaceId: workspaceId,
-            collectionId: collectionId,
-            userId: userId,
-          }),
-        });
-        setUploadProgress(60);
-        if (!presignedRes.ok) {
-          throw new Error("Could not obtain upload URL");
-        }
-        const presignedResBody = (await presignedRes.json()) as any;
-        setUploadProgress(70);
-        const uploadResponse = await fetch(presignedResBody.url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": file.type,
-          },
-          body: file,
-        });
-        if (!uploadResponse.ok) {
-          throw new Error("Upload to storage failed");
-        }
-        setUploadProgress(80);
-        const recordRes = await fetch("/api/create-photo-record", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          body: JSON.stringify({
-            collectionId: collectionId,
-            workspaceId: workspaceId,
-            userId: userId,
-            filename: file.name,
-            albumId: collectionId,
-            objectKey: presignedResBody.objectKey,
-            fileType: file.type,
-            fileSize: file.size,
-            dimensions: dimensions,
-          }),
-        });
-        if (!recordRes.ok) {
-          throw new Error("Failed to create photo record in database");
-        }
-        setUploadProgress(95);
+        const res = await fetch(
+          "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/upload",
+          {
+            method: "POST",
+            headers: { "Content-Type": file.type },
+            body: file,
+          }
+        );
+        if (!res.ok) throw new Error("Upload failed");
+        const { url, key } = await res.json();
+        console.log("Uploaded:", "Url:", url, "Key:", key);
         toast.success(`Successfully uploaded ${file.name}`);
       } catch (error) {
+        console.error("Upload error: ", error);
         toast.error(`Failed to upload ${file.name}`);
         console.error("Upload error: ", error);
       }
@@ -142,7 +102,7 @@ export function ImageUploader({
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxFiles: 100,
+    maxFiles: 1,
     maxSize: 100 * 1024 * 1024,
     accept: {
       "image/*": [
