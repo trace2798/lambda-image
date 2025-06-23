@@ -14,14 +14,10 @@ interface FileWithPreview extends FileWithPath {
 }
 
 interface InitialImageUploadProps {
-  workspaceId: string;
-  collectionId: string;
   userId: string;
 }
 
 export function ImageUploader({
-  workspaceId,
-  collectionId,
   userId,
 }: InitialImageUploadProps) {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
