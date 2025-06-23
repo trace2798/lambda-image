@@ -5,8 +5,7 @@ frontend:
       commands:
         - npm ci
     build:
-      commands:
-      - npx drizzle-kit migrate:latest     
+      commands:   
         - npm run build
   artifacts:
     baseDirectory: .next
