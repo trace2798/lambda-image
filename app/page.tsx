@@ -107,3 +107,7 @@ export default async function Home() {
     </div>
   );
 }
+
+
+
+// aws logs tail "/aws/amplify/d2k7qje6c3xraz" --log-stream-name-prefix "master" --since 5m --follow --region ap-south-1
