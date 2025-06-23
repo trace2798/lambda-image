@@ -1,6 +1,5 @@
 import { ImageUploader } from "@/components/image-uploader";
 import { db } from "@/db";
-import Image from "next/image";
 
 export default async function Home() {
   const users = await db.query.user.findMany();
