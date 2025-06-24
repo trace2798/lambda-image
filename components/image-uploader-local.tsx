@@ -194,6 +194,7 @@
 //     </>
 //   );
 // }
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -205,7 +206,7 @@ interface UploadResponse {
   url: string;
 }
 
-export function ImageUploader() {
+export function ImageUploaderLocal() {
   const [file, setFile] = useState<FileWithPath | null>(null);
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
   const [compressedUrl, setCompressedUrl] = useState<string | null>(null);
@@ -226,84 +227,6 @@ export function ImageUploader() {
     maxFiles: 1,
   });
 
-  // When file is selected, upload it
-  // useEffect(() => {
-  //   if (!file) return;
-
-  //   (async () => {
-  //     setUploading(true);
-  //     try {
-  //       // Upload raw file
-  //       // const res = await fetch(
-  //       //   "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/upload",
-  //       //   {
-  //       //     method: "POST",
-  //       //     headers: { "Content-Type": file.type },
-  //       //     body: file,
-  //       //   }
-  //       // );
-  //       const res = await fetch("http://localhost:3000/upload", {
-  //         method: "POST",
-  //         headers: { "Content-Type": file.type },
-  //         body: file,
-  //       });
-  //       if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
-  //       const { key, url } = (await res.json()) as UploadResponse;
-  //       setOriginalUrl(url);
-
-  //       // Now compress via your compress endpoint
-
-  //       // setCompressing(true);
-  //       // const cRes = await fetch('https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/compress', {
-  //       //   method: 'POST',
-  //       //   headers: { 'Content-Type': 'application/json' },
-  //       //   body: JSON.stringify({ key }),
-  //       // });
-  //       // if (!cRes.ok) throw new Error(`Compress failed: ${cRes.status}`);
-  //       // const { url: compUrl } = await cRes.json();
-  //       // setCompressedUrl(compUrl);
-
-  //       toast.success("Image uploaded & compressed!");
-  //     } catch (err: any) {
-  //       console.error(err);
-  //       toast.error(err.message || "Something went wrong");
-  //     } finally {
-  //       setUploading(false);
-  //       setCompressing(false);
-  //     }
-  //   })();
-  // }, [file]);
-  // useEffect(() => {
-  //   if (!file) return;
-
-  //   (async () => {
-  //     setUploading(true);
-  //     try {
-  //       // 1) Build FormData
-  //       const formData = new FormData();
-  //       formData.append("file", file);
-
-  //       // 2) POST (no manual headers)
-  //       const res = await fetch("https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/upload", {
-  //         method: "POST",
-  //         body: formData,
-  //       });
-  //       if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
-
-  //       // 3) Handle response
-  //       const { key, url } = (await res.json()) as UploadResponse;
-  //       setOriginalUrl(url);
-
-  //       toast.success("Image uploaded & compressed!");
-  //     } catch (err: any) {
-  //       console.error(err);
-  //       toast.error(err.message || "Something went wrong");
-  //     } finally {
-  //       setUploading(false);
-  //       setCompressing(false);
-  //     }
-  //   })();
-  // }, [file]);
   useEffect(() => {
     if (!file) return;
 
@@ -318,7 +241,7 @@ export function ImageUploader() {
         //   method: "POST",
         //   body: formData,
         // });
-        const presignRes = await fetch("https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign", {
+        const presignRes = await fetch("http://localhost:3000/presign", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

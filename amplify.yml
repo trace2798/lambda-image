@@ -5,7 +5,11 @@ frontend:
       commands:
         - npm ci
     build:
-      commands:   
+      commands:
+        - echo "TURSO_DATABASE_URL=$TURSO_DATABASE_URL" >> .env.production
+        - echo "TURSO_AUTH_TOKEN=$TURSO_AUTH_TOKEN" >> .env.production
+        - echo "BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET" >> .env.production
+        - echo "BETTER_AUTH_URL=$BETTER_AUTH_URL" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
