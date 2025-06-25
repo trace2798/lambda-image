@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "65db03f8-8259-4795-8fb7-42961ecf174e",
+  "id": "e84cb92e-331a-48d3-b90d-0f4f081ac485",
   "prevId": "50b6699d-644f-4167-b134-517948b6ec31",
   "tables": {
     "account": {
@@ -120,6 +120,116 @@
             "id"
           ],
           "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "image": {
+      "name": "image",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "publicId": {
+          "name": "publicId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "originalImageKey": {
+          "name": "originalImageKey",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnailImageKey": {
+          "name": "thumbnailImageKey",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "alt": {
+          "name": "alt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "workspaceId": {
+          "name": "workspaceId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "image_publicId_unique": {
+          "name": "image_publicId_unique",
+          "columns": [
+            "publicId"
+          ],
+          "isUnique": true
+        },
+        "image_workspace_idx": {
+          "name": "image_workspace_idx",
+          "columns": [
+            "workspaceId"
+          ],
+          "isUnique": false
+        },
+        "image_publicid_idx": {
+          "name": "image_publicid_idx",
+          "columns": [
+            "publicId"
+          ],
+          "isUnique": false
+        },
+        "image_workspubid_idx": {
+          "name": "image_workspubid_idx",
+          "columns": [
+            "workspaceId",
+            "publicId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "image_workspaceId_workspace_id_fk": {
+          "name": "image_workspaceId_workspace_id_fk",
+          "tableFrom": "image",
+          "tableTo": "workspace",
+          "columnsFrom": [
+            "workspaceId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -401,11 +511,11 @@
           "name": "publicId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -434,10 +544,24 @@
         }
       },
       "indexes": {
+        "workspace_publicId_unique": {
+          "name": "workspace_publicId_unique",
+          "columns": [
+            "publicId"
+          ],
+          "isUnique": true
+        },
         "workspace_user_idx": {
           "name": "workspace_user_idx",
           "columns": [
             "userId"
+          ],
+          "isUnique": false
+        },
+        "workspace_publicid_idx": {
+          "name": "workspace_publicid_idx",
+          "columns": [
+            "publicId"
           ],
           "isUnique": false
         }

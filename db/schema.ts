@@ -73,7 +73,7 @@ export const workspace = sqliteTable(
     id: text("id")
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
-    publicId: text("publicId"),
+    publicId: text("publicId").notNull().unique(),
     title: text("title").notNull(),
     userId: text("userId")
       .notNull()
@@ -86,3 +86,33 @@ export const workspace = sqliteTable(
     index("workspace_publicid_idx").on(table.publicId),
   ]
 );
+
+export const image = sqliteTable(
+  "image",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    publicId: text("publicId").notNull().unique(),
+    originalImageKey: text("originalImageKey"),
+    thumbnailImageKey: text("thumbnailImageKey"),
+    alt: text("alt"),
+    workspaceId: text("workspaceId")
+      .notNull()
+      .references(() => workspace.id, { onDelete: "cascade" }),
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+  },
+  (table) => [
+    index("image_workspace_idx").on(table.workspaceId),
+    index("image_publicid_idx").on(table.publicId),
+    index("image_workspubid_idx").on(table.workspaceId, table.publicId),
+  ]
+);
+
+export const imageRelations = relations(image, ({ one }) => ({
+  workspace: one(workspace, {
+    fields: [image.workspaceId],
+    references: [workspace.id],
+  }),
+}));

@@ -185,8 +185,7 @@ export async function AppSidebar({
         <Separator />
       </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {/* {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -201,7 +200,7 @@ export async function AppSidebar({
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        ))}
+        ))} */}
       </SidebarContent>
       <SidebarFooter>
         <UserAccountNav
