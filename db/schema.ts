@@ -1,9 +1,5 @@
-import {
-    index,
-    integer,
-    sqliteTable,
-    text
-} from "drizzle-orm/sqlite-core";
+import { relations } from "drizzle-orm";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const session = sqliteTable(
   "session",
@@ -70,3 +66,35 @@ export const user = sqliteTable("user", {
   createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
 });
+
+export const workspace = sqliteTable(
+  "workspace",
+  {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    userId: text("userId")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+  },
+  (table) => [index("workspace_user_idx").on(table.userId)]
+);
+
+export const folder = sqliteTable(
+  "folder",
+  {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    workspaceId: text("workspaceId")
+      .notNull()
+      .references(() => workspace.id, { onDelete: "cascade" }),
+    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+  },
+  (table) => [index("folder_workspace_idx").on(table.workspaceId)]
+);
+
+export const workspaceFolderRelation = relations(workspace, ({ many }) => ({
+  folders: many(folder),
+}));

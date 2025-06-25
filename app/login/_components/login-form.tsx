@@ -54,15 +54,13 @@ export default function LoginForm() {
       },
       {
         onRequest: (ctx) => {
-          //show loading
-          console.log('loading')
+          console.log("loading");
           toast.loading("Logging you in...");
         },
         onSuccess: (ctx) => {
           console.log("On Success", ctx);
           toast.success("Logged in successfully");
           setSubmitting(false);
-          //redirect to the dashboard or sign in page
         },
         onError: (ctx) => {
           // display the error message
@@ -72,11 +70,6 @@ export default function LoginForm() {
       }
     );
     console.log("Data:", data);
-    // if (error) {
-    //   setError(error.message as any);
-    // } else {
-    //   router.push("/"); // Optionally auto sign in or redirect after sign up
-    // }
   };
 
   return (
