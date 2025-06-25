@@ -15,6 +15,20 @@
       "when": 1750882148287,
       "tag": "0001_true_reavers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1750883100847,
+      "tag": "0002_omniscient_firelord",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1750886843265,
+      "tag": "0003_bizarre_paper_doll",
+      "breakpoints": true
     }
   ]
 }

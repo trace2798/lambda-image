@@ -18,7 +18,10 @@ interface InitialImageUploadProps {
   workspaceId: string;
 }
 
-export function ImageUploader({ userId, workspaceId }: InitialImageUploadProps) {
+export function ImageUploader({
+  userId,
+  workspaceId,
+}: InitialImageUploadProps) {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(5);
@@ -72,17 +75,40 @@ export function ImageUploader({ userId, workspaceId }: InitialImageUploadProps) 
           });
         }
         setUploadProgress(35);
-        const res = await fetch(
-          "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/upload",
+        const presignRes = await fetch(
+          "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign",
           {
             method: "POST",
-            headers: { "Content-Type": file.type },
-            body: file,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              filename: file.name,
+              contentType: file.type,
+              userId,
+              workspaceId,
+            }),
           }
         );
-        if (!res.ok) throw new Error("Upload failed");
-        const { url, key } = await res.json();
-        console.log("Uploaded:", "Url:", url, "Key:", key);
+        if (!presignRes.ok) throw new Error("Failed to get presigned URL");
+        const { url: uploadUrl, key } = (await presignRes.json()) as {
+          url: string;
+          key: string;
+        };
+
+        // 3) PUT the file to S3
+        setUploadProgress(50);
+        const uploadRes = await fetch(uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: file,
+        });
+        if (!uploadRes.ok) throw new Error("S3 upload failed");
+
+        // 4) Build public URL (or pass key back to backend)
+        const publicUrl = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${key}`;
+        console.log("✅ Uploaded:", publicUrl);
+        console.log("KEY", key);
         toast.success(`Successfully uploaded ${file.name}`);
       } catch (error) {
         console.error("Upload error: ", error);
@@ -97,19 +123,10 @@ export function ImageUploader({ userId, workspaceId }: InitialImageUploadProps) 
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxFiles: 1,
+    maxFiles: 5,
     maxSize: 100 * 1024 * 1024,
     accept: {
-      "image/*": [
-        ".png",
-        ".gif",
-        ".jpeg",
-        ".jpg",
-        ".webp",
-        ".svg",
-        ".heic",
-        ".heif",
-      ],
+      "image/*": [".png", ".jpeg", ".jpg", ".webp"],
     },
   });
 
@@ -117,7 +134,7 @@ export function ImageUploader({ userId, workspaceId }: InitialImageUploadProps) 
     <div key={file.name} className={`w-full`}>
       <div className="flex justify-evenly">
         <img
-          className="size-32 object-cover"
+          className="size-[100px] object-cover"
           src={file.preview}
           alt={file.name}
         />

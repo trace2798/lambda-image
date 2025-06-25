@@ -1,0 +1,1 @@
+CREATE INDEX `image_original_idx` ON `image` (`originalImageKey`);

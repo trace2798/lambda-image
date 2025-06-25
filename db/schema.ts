@@ -96,6 +96,7 @@ export const image = sqliteTable(
     publicId: text("publicId").notNull().unique(),
     originalImageKey: text("originalImageKey"),
     thumbnailImageKey: text("thumbnailImageKey"),
+    hoverImageKey: text("hoverImageKey"),
     alt: text("alt"),
     workspaceId: text("workspaceId")
       .notNull()
@@ -107,6 +108,7 @@ export const image = sqliteTable(
     index("image_workspace_idx").on(table.workspaceId),
     index("image_publicid_idx").on(table.publicId),
     index("image_workspubid_idx").on(table.workspaceId, table.publicId),
+    index("image_original_idx").on(table.originalImageKey),
   ]
 );
 
