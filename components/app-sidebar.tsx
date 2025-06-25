@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -12,6 +13,15 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { ImageIcon } from "lucide-react";
+import { SelectWorkspace, Workspace } from "./select-workspace";
+import { Separator } from "./ui/separator";
+import { Label } from "./ui/label";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { db } from "@/db";
+import UserAccountNav from "./user-account-nav";
+import SignOutButton from "./sign-out-button";
 
 // This is sample data.
 const data = {
@@ -145,7 +155,23 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    redirect("/login");
+  }
+  const workspaces = await db.query.workspace.findMany({
+    where: (w, { eq }) => eq(w.userId, session.user.id),
+    orderBy: (w, { asc }) => asc(w.createdAt),
+  });
+  console.log(workspaces);
+  if (!workspaces) {
+    redirect("/onboard");
+  }
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex flex-col">
@@ -153,6 +179,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <ImageIcon className="size-5" />
           <p className="text-2xl ">Lambda Image</p>
         </div>
+        <Separator />
+        <Label className="text-primary/80">Current Workspace</Label>
+        <SelectWorkspace workspaces={workspaces as Workspace[]} />
+        <Separator />
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
@@ -173,6 +203,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <UserAccountNav
+          email={session.user.email}
+          imageUrl={session.user.image as string}
+          name={session.user.name}
+        />
+        <SignOutButton />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

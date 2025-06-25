@@ -1,8 +1,3 @@
-import { db } from "@/db";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import CreateWorkspaceForm from "../onboard/_components/create-workspace-form";
 import {
   Card,
   CardContent,
@@ -11,6 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { db } from "@/db";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { CreateWorkspaceDialog } from "./_components/create-workspace-dialog";
 
 const Page = async ({}) => {
@@ -39,7 +38,7 @@ const Page = async ({}) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-5 hover:cursor-pointer ">
-            {workspaces.map((workspace, index) => (
+            {workspaces.map((workspace) => (
               <a
                 key={workspace.id}
                 href={`/${workspace.id}`}

@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { createWorkspace } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,17 +18,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signUp } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { generate } from "random-words";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { generate, count } from "random-words";
-import { createWorkspace } from "@/app/actions";
-import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   title: z.string().min(2, {
