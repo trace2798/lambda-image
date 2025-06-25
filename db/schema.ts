@@ -70,31 +70,19 @@ export const user = sqliteTable("user", {
 export const workspace = sqliteTable(
   "workspace",
   {
-    id: text("id").primaryKey(),
-    name: text("name").notNull(),
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    publicId: text("publicId"),
+    title: text("title").notNull(),
     userId: text("userId")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
     updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
   },
-  (table) => [index("workspace_user_idx").on(table.userId)]
+  (table) => [
+    index("workspace_user_idx").on(table.userId),
+    index("workspace_publicid_idx").on(table.publicId),
+  ]
 );
-
-export const folder = sqliteTable(
-  "folder",
-  {
-    id: text("id").primaryKey(),
-    name: text("name").notNull(),
-    workspaceId: text("workspaceId")
-      .notNull()
-      .references(() => workspace.id, { onDelete: "cascade" }),
-    createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
-    updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
-  },
-  (table) => [index("folder_workspace_idx").on(table.workspaceId)]
-);
-
-export const workspaceFolderRelation = relations(workspace, ({ many }) => ({
-  folders: many(folder),
-}));

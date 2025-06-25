@@ -151,7 +151,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="flex flex-col">
         <div className="flex justify-center space-x-2 items-center">
           <ImageIcon className="size-5" />
-          <span className="text-2xl ">Lambda Image</span>
+          <p className="text-2xl ">Lambda Image</p>
         </div>
       </SidebarHeader>
       <SidebarContent>

@@ -8,6 +8,20 @@
       "when": 1750631335610,
       "tag": "0000_white_blue_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1750869582639,
+      "tag": "0001_loud_dexter_bennett",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1750871913832,
+      "tag": "0002_public_gauntlet",
+      "breakpoints": true
     }
   ]
 }

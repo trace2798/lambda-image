@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,7 +21,6 @@ import { Label } from "@/components/ui/label";
 import { signUp } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-// import { Link } from "next-view-transitions";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
