@@ -17,12 +17,12 @@ import {
 } from "@/components/ui/table";
 import { useRouter, usePathname } from "next/navigation";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends { publicId: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { publicId: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {

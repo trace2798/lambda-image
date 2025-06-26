@@ -35,20 +35,53 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
 
   const image = await db.query.image.findFirst({
     where: (img, { eq }) => eq(img.publicId, imagePublicId),
-   
   });
+  if (!image || image === null) {
+    redirect(`/${workspaceId}`);
+  }
   console.log("IMAGESSSSS", image);
   const originalImg = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${image?.originalImageKey}`;
   const compressedImg = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${image?.compressImageKey}`;
   const toMB = (bytes: number) => (bytes / 1_000_000).toFixed(2);
+  const savedBytes = image.originalSize! - image.compressedSize!;
+  const savedPercent = ((savedBytes / image.originalSize!) * 100).toFixed(1);
+  const onFlyUrl = `${workspaceInfo.publicId}/${imagePublicId}`;
+  console.log("ONFLY URL", onFlyUrl);
   return (
-    <div className="flex flex-col w-full h-full space-y-10 max-w-5xl mx-auto">
+    <div className="flex flex-col w-full h-full space-y-10 max-w-5xl mx-auto px-[5vw]">
       <div className="flex flex-col space-y-10">
         <div className="flex flex-col space-y-5">
           <Label className="text-2xl">Image Information</Label>
           <Separator />
+          <div className="flex flex-col space-y-1">
+            <div>
+              <span className="text-primary/80 text-sm">Dimension: </span>
+              {`${image?.originalWidth}×${image?.originalHeight}`}
+            </div>
+            <div className="flex truncate">
+              <span className="text-primary/80 text-sm">
+                Original Image Storage Url:{" "}
+              </span>{" "}
+              <span className="text-sm hover:cursor-pointer hover:text-indigo-400">
+                <a href={originalImg} target="_blank">
+                  &nbsp; {originalImg}
+                </a>
+              </span>
+            </div>
+            <div className="flex truncate">
+              <span className="text-primary/80 text-sm">
+                Compressed Image Storage Url:{" "}
+              </span>{" "}
+              <span className="text-sm  hover:cursor-pointer hover:text-indigo-400">
+                <a href={compressedImg} target="_blank">
+                  &nbsp; {compressedImg}
+                </a>
+              </span>
+            </div>
+          </div>
+          <Separator />
         </div>
-        <div className="grid grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <Card>
             <CardHeader>
               <CardTitle>{toMB(image?.originalSize as number)} mb</CardTitle>
@@ -57,16 +90,19 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>{toMB(image?.compressedSize as number)} mb</CardTitle>
-              <CardDescription>Compressed Image Size</CardDescription>
+              <CardTitle>
+                {toMB(savedBytes)} MB&nbsp;
+                <span className="text-sm font-medium text-green-600">
+                  ({savedPercent}%)
+                </span>
+              </CardTitle>
+              <CardDescription>Size Reduction</CardDescription>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>
-                {`${image?.originalWidth}×${image?.originalHeight}`}
-              </CardTitle>
-              <CardDescription>Dimensions</CardDescription>
+              <CardTitle>{toMB(image?.compressedSize as number)} mb</CardTitle>
+              <CardDescription>Compressed Image Size</CardDescription>
             </CardHeader>
           </Card>
         </div>
@@ -89,6 +125,7 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
           </div>
         </div>
       </div>
+      <img src={"http://localhost:3001/image/qgGrRlgAtNYML3DLuez08/XxDAIvQzTZYvvQwkaqr1g"}/>
     </div>
   );
 };

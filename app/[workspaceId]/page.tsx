@@ -28,10 +28,6 @@ const WorkspaceIdIdPage = async ({ params }: WorkspaceIdIdPageProps) => {
   if (workspaceInfo?.userId !== session.user.id) {
     redirect("/login");
   }
-  // const images = await db.query.image.findMany({
-  //   where: (img, { eq }) => eq(img.workspaceId, workspaceId),
-  // });
-  // console.log("Images", images);
 
   const rawImages = await db.query.image.findMany({
     where: (img, { eq }) => eq(img.workspaceId, workspaceId),
