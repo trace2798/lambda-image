@@ -8,7 +8,7 @@ export const session = sqliteTable(
     userId: text("userId")
       .notNull()
       .references(() => user.id),
-    token: text("token").notNull().unique(), // Unique session token
+    token: text("token").notNull().unique(),
     expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull(),
     ipAddress: text("ipAddress"),
     userAgent: text("userAgent"),
@@ -98,7 +98,12 @@ export const image = sqliteTable(
     compressImageKey: text("compressImageKey"),
     thumbnailImageKey: text("thumbnailImageKey"),
     hoverImageKey: text("hoverImageKey"),
+
     alt: text("alt"),
+    originalWidth: integer("originalWidth"),
+    originalHeight: integer("originalHeight"),
+    originalSize: integer("originalSize"),
+    compressedSize: integer("compressedSize"),
     workspaceId: text("workspaceId")
       .notNull()
       .references(() => workspace.id, { onDelete: "cascade" }),

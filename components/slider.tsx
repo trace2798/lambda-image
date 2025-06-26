@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "./ui/badge";
 
 export const Slider = ({
   originalImage,
@@ -37,7 +38,11 @@ export const Slider = ({
         onMouseMove={handleMove}
         onMouseDown={handleMouseDown}
       >
-        <img src=" https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/a058047f-0d07-492c-b67d-4bdcd7fb0edb/original/1750936228439-629b40b7-95e9-4a7d-8eb1-c49bfe1dbc76.jpeg" />
+        <img
+          alt={""}
+          src={originalImage}
+          className="w-full h-full object-cover"
+        />
 
         <div
           className="absolute top-0 left-0 right-0 w-full max-w-[700px] aspect-[70/45] m-auto overflow-hidden select-none"
@@ -45,7 +50,8 @@ export const Slider = ({
         >
           <img
             alt=""
-            src=" https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/a058047f-0d07-492c-b67d-4bdcd7fb0edb/original/1750936228439-629b40b7-95e9-4a7d-8eb1-c49bfe1dbc76.webp"
+            src={optimizedImage}
+            className="w-full h-full object-cover"
           />
         </div>
         <div
@@ -54,7 +60,13 @@ export const Slider = ({
             left: `calc(${sliderPosition}% - 1px)`,
           }}
         >
+          <div className="absolute top-2 right-2 text-xs">
+            <Badge variant={"secondary"}>Original</Badge>
+          </div>
           <div className="bg-white absolute rounded-full h-3 w-3 -left-1 top-[calc(50%-5px)]" />
+          <div className="absolute top-2 left-2 text-xs">
+            <Badge variant={"secondary"}>Compressed</Badge>
+          </div>
         </div>
       </div>
     </div>
