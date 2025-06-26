@@ -95,6 +95,7 @@ export const image = sqliteTable(
       .$defaultFn(() => crypto.randomUUID()),
     publicId: text("publicId").notNull().unique(),
     originalImageKey: text("originalImageKey"),
+    compressImageKey: text("compressImageKey"),
     thumbnailImageKey: text("thumbnailImageKey"),
     hoverImageKey: text("hoverImageKey"),
     alt: text("alt"),

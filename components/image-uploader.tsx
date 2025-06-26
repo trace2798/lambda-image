@@ -51,29 +51,29 @@ export function ImageUploader({
       setUploadProgressIndex(index);
       setUploadProgress(20);
       try {
-        let dimensions = "";
-        if (file.type.startsWith("image/")) {
-          dimensions = await new Promise<string>((resolve) => {
-            const imageUrl = URL.createObjectURL(file);
-            const img = new Image();
-            img.onload = () => {
-              const dims = `${img.naturalWidth}x${img.naturalHeight}`;
-              console.log(
-                "Width:",
-                img.naturalWidth,
-                "Height:",
-                img.naturalHeight
-              );
-              URL.revokeObjectURL(imageUrl);
-              resolve(dims);
-            };
-            img.onerror = () => {
-              URL.revokeObjectURL(imageUrl);
-              resolve("");
-            };
-            img.src = imageUrl;
-          });
-        }
+        // let dimensions = "";
+        // if (file.type.startsWith("image/")) {
+        //   dimensions = await new Promise<string>((resolve) => {
+        //     const imageUrl = URL.createObjectURL(file);
+        //     const img = new Image();
+        //     img.onload = () => {
+        //       const dims = `${img.naturalWidth}x${img.naturalHeight}`;
+        //       console.log(
+        //         "Width:",
+        //         img.naturalWidth,
+        //         "Height:",
+        //         img.naturalHeight
+        //       );
+        //       URL.revokeObjectURL(imageUrl);
+        //       resolve(dims);
+        //     };
+        //     img.onerror = () => {
+        //       URL.revokeObjectURL(imageUrl);
+        //       resolve("");
+        //     };
+        //     img.src = imageUrl;
+        //   });
+        // }
         setUploadProgress(35);
         const presignRes = await fetch(
           "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign",
@@ -88,13 +88,13 @@ export function ImageUploader({
             }),
           }
         );
+        console.log("Presifned call done")
         if (!presignRes.ok) throw new Error("Failed to get presigned URL");
         const { url: uploadUrl, key } = (await presignRes.json()) as {
           url: string;
           key: string;
         };
-
-        // 3) PUT the file to S3
+        console.log("GOT PREDEFINED URL");
         setUploadProgress(50);
         const uploadRes = await fetch(uploadUrl, {
           method: "PUT",
@@ -105,10 +105,22 @@ export function ImageUploader({
         });
         if (!uploadRes.ok) throw new Error("S3 upload failed");
 
-        // 4) Build public URL (or pass key back to backend)
         const publicUrl = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${key}`;
         console.log("✅ Uploaded:", publicUrl);
         console.log("KEY", key);
+
+        const compressRes = await fetch(
+          "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/compress",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              key,
+              workspaceId,
+            }),
+          }
+        );
+        console.log("Compress Res", compressRes);
         toast.success(`Successfully uploaded ${file.name}`);
       } catch (error) {
         console.error("Upload error: ", error);
