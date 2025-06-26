@@ -18,30 +18,56 @@ const GenerateAltButton = ({ imagePublicId }: { imagePublicId: string }) => {
     setAltText("");
 
     try {
-      const res = await fetch("http://localhost:3001/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imagePublicId }),
-      });
-      if (!res.ok || !res.body) {
+      //   const res = await fetch(
+      //     // "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate",
+      //     "https://usqpysew5aqezvjswn2ehulwzy0mwinf.lambda-url.ap-south-1.on.aws/generate",
+      //     {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ imagePublicId }),
+      //     }
+      //   );
+      //   if (!res.ok || !res.body) {
+      //     throw new Error(`API returned ${res.status}`);
+      //   }
+
+      //   const reader = res.body.getReader();
+      //   const decoder = new TextDecoder();
+      //   let done = false;
+
+      //   while (!done) {
+      //     const { value, done: streamDone } = await reader.read();
+      //     done = streamDone;
+      //     if (!value) continue;
+      //     const chunkText = decoder.decode(value, { stream: true });
+      //     for (const line of chunkText.split(/\r?\n/)) {
+      //       if (line.startsWith("data:")) {
+      //         const textPiece = line.slice(6).trimEnd();
+      //         setAltText((prev) => prev + textPiece);
+      //       }
+      //     }
+      //   }
+      //without streaming
+      const res = await fetch(
+        "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate",
+
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imagePublicId }),
+        }
+      );
+
+      if (!res.ok) {
         throw new Error(`API returned ${res.status}`);
       }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let done = false;
-
-      while (!done) {
-        const { value, done: streamDone } = await reader.read();
-        done = streamDone;
-        if (!value) continue;
-        const chunkText = decoder.decode(value, { stream: true });
-        for (const line of chunkText.split(/\r?\n/)) {
-          if (line.startsWith("data:")) {
-            const textPiece = line.slice(6).trimEnd();
-            setAltText((prev) => prev + textPiece);
-          }
-        }
+      const data = (await res.json()) as { altText?: string; error?: string };
+      if (data.error) {
+        setError(data.error);
+      } else if (data.altText) {
+        setAltText(data.altText);
+      } else {
+        setError("No alt text returned");
       }
     } catch (err: any) {
       console.error(err);

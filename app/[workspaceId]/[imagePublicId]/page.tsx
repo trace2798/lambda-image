@@ -1,6 +1,4 @@
-import { ImageUploader } from "@/components/image-uploader";
 import { Slider } from "@/components/slider";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -11,10 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
 import { auth } from "@/lib/auth";
-import { SparkleIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import GenerateAltButton from "./_components/generate-alt-button";
+import RegenerateAltButton from "./_components/regenerate -alt-button";
 
 interface ImagePublicIdPageProps {
   params: Promise<{ workspaceId: string; imagePublicId: string }>;
@@ -37,6 +35,7 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
 
   const image = await db.query.image.findFirst({
     where: (img, { eq }) => eq(img.publicId, imagePublicId),
+   
   });
   console.log("IMAGESSSSS", image);
   const originalImg = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${image?.originalImageKey}`;
@@ -71,16 +70,23 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
             </CardHeader>
           </Card>
         </div>
-        <Slider originalImage={originalImg} optimizedImage={compressedImg} />
-        <div className="flex flex-col space-y-3 justify-center items-center">
-          <p className="text-sm text-primary/70">
-            {image?.alt || "You don't have alternate text for this image"}
-          </p>
-          {!image?.alt ? (
-            <GenerateAltButton imagePublicId={imagePublicId} />
-          ) : (
-            <h1>Regenerate</h1>
-          )}
+        <div className="flex flex-col space-y-3 w-full max-w-4xl mx-auto pb-24">
+          <Slider originalImage={originalImg} optimizedImage={compressedImg} />
+
+          <div className="flex flex-col space-y-3 justify-center items-center">
+            <p className="text-sm text-primary/70">
+              {image?.alt || "You don't have alternate text for this image"}
+            </p>
+
+            {!image?.alt ? (
+              <GenerateAltButton imagePublicId={imagePublicId} />
+            ) : (
+              <RegenerateAltButton
+                imagePublicId={imagePublicId}
+                currentAlt={image.alt}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

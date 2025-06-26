@@ -7,6 +7,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { columns, Image } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
+import { asc, desc } from "drizzle-orm";
+import { image } from "@/db/schema";
 
 interface WorkspaceIdIdPageProps {
   params: Promise<{ workspaceId: string }>;
@@ -33,6 +35,7 @@ const WorkspaceIdIdPage = async ({ params }: WorkspaceIdIdPageProps) => {
 
   const rawImages = await db.query.image.findMany({
     where: (img, { eq }) => eq(img.workspaceId, workspaceId),
+    orderBy: [desc(image?.createdAt)],
   });
 
   const images: Image[] = rawImages.map((row) => ({
