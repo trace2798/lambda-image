@@ -18,6 +18,7 @@ import { Separator } from "./ui/separator";
 import UserAccountNav from "./user-account-nav";
 import { Button } from "./ui/button";
 import SidebarHomeButton from "./sidebar-home-button";
+import SidebarAIImageButton from "./sidebar-ai-image-button";
 
 export async function AppSidebar({
   ...props
@@ -48,8 +49,9 @@ export async function AppSidebar({
         <SelectWorkspace workspaces={workspaces as Workspace[]} />
         <Separator />
       </SidebarHeader>
-      <SidebarContent className="flex flex-col items-center">
+      <SidebarContent className="flex flex-col items-center pt-3 px-[1vw]">
         <SidebarHomeButton />
+        <SidebarAIImageButton/>
         {/* {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>

@@ -9,8 +9,8 @@ const SidebarHomeButton = ({}) => {
   const params = useParams();
   return (
     <>
-      <Link href={`/${params.workspaceId}`}>
-        <Button variant={"outline"} className="h-6 max-w-[100px]">
+      <Link href={`/${params.workspaceId}`} className="w-full">
+        <Button variant={"outline"} className="h-8 w-full">
           <HouseIcon /> Home
         </Button>
       </Link>
