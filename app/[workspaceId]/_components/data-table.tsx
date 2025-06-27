@@ -22,6 +22,8 @@ interface DataTableProps<TData extends { publicId: string }, TValue> {
   data: TData[];
 }
 
+
+
 export function DataTable<TData extends { publicId: string }, TValue>({
   columns,
   data,

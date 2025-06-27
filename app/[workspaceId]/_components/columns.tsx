@@ -13,6 +13,7 @@ export type Image = {
   originalSize: number;
   compressedSize: number;
   createdAt: string;
+  workspacePublicId: string;
 };
 
 export const columns: ColumnDef<Image>[] = [
@@ -20,12 +21,22 @@ export const columns: ColumnDef<Image>[] = [
     id: "thumbnail",
     header: "Thumbnail",
     accessorKey: "compressImageKey",
-    cell: ({ getValue }) => {
+    cell: ({ row, getValue }) => {
+      // getValue() === compressImageKey
       const key = getValue() as string;
-      const src = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${key}`;
+      const { workspacePublicId, publicId } = row.original;
+
+      const src = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${publicId}/width=80,height=80`;
+
+      // `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${key}`;
+      // https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${image.publicId}/width=80,height=80
       // const url = `http://localhost:3001/image/qgGrRlgAtNYML3DLuez08/XxDAIvQzTZYvvQwkaqr1g/`
       return (
-        <img src={src} alt="thumb" className="size-[80px] object-cover rounded" />
+        <img
+          src={src}
+          alt="thumb"
+          className="size-[80px] object-cover rounded"
+        />
       );
     },
   },

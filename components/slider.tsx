@@ -13,60 +13,61 @@ export const Slider = ({
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleMove = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-    const percent = Math.max(0, Math.min((x / rect.width) * 100, 100));
-
-    setSliderPosition(percent);
+    const { left, width } = e.currentTarget.getBoundingClientRect();
+    const raw = e.clientX - left;
+    const clamped = Math.max(0, Math.min(raw, width));
+    const pct = Math.round((clamped / width) * 100);
+    setSliderPosition(pct);
   };
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  const showCompressed = sliderPosition > 1;
+  const showOriginal = sliderPosition < 99;
 
   return (
-    <div className="w-full relative" onMouseUp={handleMouseUp}>
+    <div
+      className="w-full relative"
+      onMouseUp={() => setIsDragging(false)}
+      onMouseLeave={() => setIsDragging(false)}
+    >
       <div
         className="relative w-full max-w-[700px] aspect-[70/45] m-auto overflow-hidden select-none"
         onMouseMove={handleMove}
-        onMouseDown={handleMouseDown}
+        onMouseDown={() => setIsDragging(true)}
       >
         <img
-          alt={""}
           src={originalImage}
+          alt="Original"
           className="w-full h-full object-cover"
         />
-
         <div
-          className="absolute top-0 left-0 right-0 w-full max-w-[700px] aspect-[70/45] m-auto overflow-hidden select-none"
+          className="absolute inset-0 overflow-hidden"
           style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
         >
           <img
-            alt=""
             src={optimizedImage}
+            alt="Optimized"
             className="w-full h-full object-cover"
           />
         </div>
+
+        {showCompressed && (
+          <div className="absolute top-2 left-2 text-xs pointer-events-none">
+            <Badge variant="secondary">Compressed</Badge>
+          </div>
+        )}
+        {showOriginal && (
+          <div className="absolute top-2 right-2 text-xs pointer-events-none">
+            <Badge variant="secondary">Original</Badge>
+          </div>
+        )}
+
         <div
           className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize"
-          style={{
-            left: `calc(${sliderPosition}% - 1px)`,
-          }}
+          style={{ left: `calc(${sliderPosition}% - 0.5px)` }}
         >
-          <div className="absolute top-2 right-2 text-xs">
-            <Badge variant={"secondary"}>Original</Badge>
-          </div>
-          <div className="bg-white absolute rounded-full h-3 w-3 -left-1 top-[calc(50%-5px)]" />
-          <div className="absolute top-2 left-2 text-xs">
-            <Badge variant={"secondary"}>Compressed</Badge>
-          </div>
+          <div className="absolute -left-1 top-1/2 h-3 w-3 rounded-full bg-white" />
         </div>
       </div>
     </div>

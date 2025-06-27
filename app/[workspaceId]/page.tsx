@@ -2,13 +2,13 @@ import { ImageUploader } from "@/components/image-uploader";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
+import { image } from "@/db/schema";
 import { auth } from "@/lib/auth";
+import { desc } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { columns, Image } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
-import { asc, desc } from "drizzle-orm";
-import { image } from "@/db/schema";
 
 interface WorkspaceIdIdPageProps {
   params: Promise<{ workspaceId: string }>;
@@ -44,6 +44,7 @@ const WorkspaceIdIdPage = async ({ params }: WorkspaceIdIdPageProps) => {
     originalSize: row.originalSize!,
     compressedSize: row.compressedSize!,
     createdAt: row.createdAt.toISOString(),
+    workspacePublicId: workspaceInfo.publicId,
   }));
   return (
     <div className="flex flex-col w-full h-full space-y-10 max-w-6xl mx-auto">
