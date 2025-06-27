@@ -101,10 +101,8 @@ export function ImageUploaderLocal() {
         )}
       </div>
 
-      {/* Previews */}
       {(originalUrl || compressedUrl) && (
         <div className="grid grid-cols-2 gap-4">
-          {/* Original */}
           <div className="flex flex-col items-center">
             <h3 className="mb-2 font-semibold">Original</h3>
             {originalUrl ? (

@@ -2,10 +2,16 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 export type Image = {
   id: string;
   publicId: string;
+  alt: string | null;
   originalImageKey: string;
   compressImageKey: string;
   originalWidth: number;
@@ -21,22 +27,24 @@ export const columns: ColumnDef<Image>[] = [
     id: "thumbnail",
     header: "Thumbnail",
     accessorKey: "compressImageKey",
-    cell: ({ row, getValue }) => {
-      // getValue() === compressImageKey
-      const key = getValue() as string;
-      const { workspacePublicId, publicId } = row.original;
-
+    cell: ({ row }) => {
+      const { workspacePublicId, publicId, alt } = row.original;
       const src = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${publicId}/width=80,height=80`;
-
-      // `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${key}`;
-      // https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${image.publicId}/width=80,height=80
-      // const url = `http://localhost:3001/image/qgGrRlgAtNYML3DLuez08/XxDAIvQzTZYvvQwkaqr1g/`
+      const hoverSrc = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${publicId}/width=200,height=200`;
       return (
-        <img
-          src={src}
-          alt="thumb"
-          className="size-[80px] object-cover rounded"
-        />
+        <HoverCard>
+          <HoverCardTrigger>
+            {" "}
+            <img
+              src={src}
+              alt={alt || ""}
+              className="size-[80px] object-cover rounded"
+            />
+          </HoverCardTrigger>
+          <HoverCardContent className="p-0 size-[200px]">
+            <img src={hoverSrc} alt={alt || "alt not generated until now"} />
+          </HoverCardContent>
+        </HoverCard>
       );
     },
   },

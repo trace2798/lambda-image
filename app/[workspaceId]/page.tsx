@@ -36,6 +36,7 @@ const WorkspaceIdIdPage = async ({ params }: WorkspaceIdIdPageProps) => {
 
   const images: Image[] = rawImages.map((row) => ({
     id: row.id,
+    alt: row.alt,
     publicId: row.publicId,
     originalImageKey: row.originalImageKey!,
     compressImageKey: row.compressImageKey!,
