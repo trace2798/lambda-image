@@ -125,7 +125,11 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
           </div>
         </div>
       </div>
-      <img src={"http://localhost:3001/image/qgGrRlgAtNYML3DLuez08/XxDAIvQzTZYvvQwkaqr1g"}/>
+      <img
+        src={
+          "http://localhost:3001/image/qgGrRlgAtNYML3DLuez08/XxDAIvQzTZYvvQwkaqr1g/format=avif,width=300,height=300,sharpen=2,grayscale"
+        }
+      />
     </div>
   );
 };
