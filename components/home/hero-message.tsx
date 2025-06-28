@@ -25,7 +25,9 @@ const HeroMessage = ({}) => {
                 <p className="text-xs text-primary/80">Optimized</p>
               </div>
               <div className="flex flex-col text-center">
-                <p className="text-lg text-green-400">0.14 MB (71.2%)</p>
+                <p className="text-base md:text-lg text-green-400">
+                  0.14 MB (71.2%)
+                </p>
                 <p className="text-xs text-primary/80">Size Reduction</p>
               </div>
               <div className="flex flex-col">
