@@ -13,6 +13,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import GenerateAltButton from "./_components/generate-alt-button";
 import RegenerateAltButton from "./_components/regenerate -alt-button";
+import { Button } from "@/components/ui/button";
 
 interface ImagePublicIdPageProps {
   params: Promise<{ workspaceId: string; imagePublicId: string }>;
@@ -40,14 +41,13 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
     redirect(`/${workspaceId}`);
   }
   console.log("IMAGESSSSS", image);
-  // const originalImg = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${image?.originalImageKey}`;
   const originalImg = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspaceInfo.publicId}/${image.publicId}/og`;
-  // const compressedImg = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${image?.compressImageKey}`;
   const compressedImg = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspaceInfo.publicId}/${image.publicId}`;
   const toMB = (bytes: number) => (bytes / 1_000_000).toFixed(2);
   const savedBytes = image.originalSize! - image.compressedSize!;
   const savedPercent = ((savedBytes / image.originalSize!) * 100).toFixed(1);
   const onFlyUrl = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspaceInfo.publicId}/${image.publicId}`;
+  // const onFlyUrlLocal = `http://localhost:3001/image/${workspaceInfo.publicId}/${image.publicId}`;
   return (
     <div className="flex flex-col w-full h-full space-y-10 max-w-5xl mx-auto px-[5vw]">
       <div className="flex flex-col space-y-10">
@@ -60,25 +60,35 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
               {`${image?.originalWidth}×${image?.originalHeight}`}
             </div>
             <Separator />
-            {/* <div className="flex truncate">
-              <span className="text-primary/80 text-sm">
-                Original Image Storage Url:{" "}
-              </span>{" "}
-              <span className="text-sm hover:cursor-pointer hover:text-indigo-400">
-                <a href={originalImg} target="_blank">
-                  &nbsp; {originalImg}
-                </a>
-              </span>
-            </div> */}
             <div className="flex flex-col truncate">
-              <Label className="text-primary/80 text-sm">
-                Transformation Base Url{" "}
-              </Label>{" "}
+              <Label className="text-primary/80 text-sm">Original Image </Label>{" "}
+              <p className="text-sm hover:cursor-pointer hover:text-indigo-400">
+                <a href={originalImg} target="_blank">
+                  {originalImg}
+                </a>
+              </p>
+            </div>
+            <div className="flex flex-col truncate">
+              <Label className="text-primary/80 text-sm">Compressed Url </Label>{" "}
               <p className="text-sm hover:cursor-pointer hover:text-indigo-400">
                 <a href={onFlyUrl} target="_blank">
                   {onFlyUrl}
                 </a>
               </p>
+            </div>
+            <div className="flex flex-col">
+              <Label className="text-primary/80 text-sm">
+                Transformation Url{" "}
+              </Label>{" "}
+              <p className="text-sm hover:cursor-pointer hover:text-indigo-400">
+                <span>Compressed url mentioned above</span>
+                <span> + {"/transformation parameter"}</span>
+              </p>
+            </div>
+            <div className="mt-3">
+              <Button variant={"outline"} size={"sm"} className="">
+                Generate url with AI
+              </Button>
             </div>
           </div>
           <Separator />

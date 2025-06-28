@@ -88,7 +88,7 @@ export function ImageUploader({
             }),
           }
         );
-        console.log("Presifned call done")
+        console.log("Presifned call done");
         if (!presignRes.ok) throw new Error("Failed to get presigned URL");
         const { url: uploadUrl, key } = (await presignRes.json()) as {
           url: string;
@@ -117,6 +117,7 @@ export function ImageUploader({
             body: JSON.stringify({
               key,
               workspaceId,
+              imgType: "user",
             }),
           }
         );

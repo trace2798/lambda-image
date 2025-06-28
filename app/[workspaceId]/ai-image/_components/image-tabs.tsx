@@ -1,5 +1,6 @@
-import { AppWindowIcon, CodeIcon, SparklesIcon } from "lucide-react";
-
+"use client";
+import { useState } from "react";
+import { SparklesIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,10 +15,34 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 
-export function TabsDemo() {
+export function ImageTabs({ workspaceId }: { workspaceId: string }) {
+  const [query, setQuery] = useState("");
+  const [imageData, setImageData] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const handleGenerate = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch("http://localhost:3001/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, workspaceId }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const { images } = await res.json();
+      const base64 = images[0];
+      setImageData(`data:image/png;base64,${base64}`);
+    } catch (err: any) {
+      setError(err.message || "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="flex w-full flex-col gap-6">
-      <Tabs defaultValue="account">
+      <Tabs defaultValue="text-to-image">
         <TabsList>
           <TabsTrigger value="text-to-image" className="hover:cursor-pointer">
             Text to Image
@@ -26,24 +51,37 @@ export function TabsDemo() {
             Image to Image
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="text-to-image">
-          <Card>
-            <CardHeader>
+        <TabsContent value="text-to-image" className="px-0">
+          <Card className="bg-transparent border-none">
+            <CardHeader className="p-0">
               <CardTitle>Text to Image Generate</CardTitle>
               <CardDescription>
                 Generate Image by using text prompt
               </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-6">
+            <CardContent className="grid gap-6 p-0">
               <div className="grid gap-3">
-                <Textarea placeholder="Type your prompt here." />
+                <Textarea
+                  placeholder="Type your prompt here."
+                  value={query}
+                  onChange={(e) => setQuery(e.currentTarget.value)}
+                />
               </div>
             </CardContent>
-            <CardFooter className="flex justify-center">
-              <Button variant={"secondary"}>
+            <CardFooter className="flex justify-end p-0">
+              <Button variant={"secondary"} onClick={handleGenerate}>
                 <SparklesIcon />
                 Generate Image
               </Button>
+              {error && <p className="text-sm text-red-600">Error: {error}</p>}
+
+              {imageData && (
+                <img
+                  src={imageData}
+                  alt="Generated result"
+                  style={{ maxWidth: "100%", borderRadius: 8 }}
+                />
+              )}
             </CardFooter>
           </Card>
         </TabsContent>

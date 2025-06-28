@@ -96,9 +96,7 @@ export const image = sqliteTable(
     publicId: text("publicId").notNull().unique(),
     originalImageKey: text("originalImageKey"),
     compressImageKey: text("compressImageKey"),
-    thumbnailImageKey: text("thumbnailImageKey"),
-    hoverImageKey: text("hoverImageKey"),
-
+    imgType: text("imgType"),
     alt: text("alt"),
     originalWidth: integer("originalWidth"),
     originalHeight: integer("originalHeight"),

@@ -1,18 +1,30 @@
-import { ImageUploader } from "@/components/image-uploader";
-import { ImageUploaderLocal } from "@/components/image-uploader-local";
-import { Button } from "@/components/ui/button";
-import { db } from "@/db";
+import HeroMessage from "@/components/home/hero-message";
+import Navbar from "@/components/home/navbar";
 
 export default async function Home() {
-  const users = await db.query.user.findMany();
-  console.log(users);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <a href="/login">
-        <Button>Login</Button>
-      </a>
-      <ImageUploader userId="" workspaceId="" />
-      <ImageUploaderLocal />
+    <div className="flex flex-col w-full h-full min-h-screen justify-between">
+      <div className="absolute inset-0 -z-10 ">
+         <img
+          // src="https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/qgGrRlgAtNYML3DLuez08/PRUCIodOQTxtF0_CnNCGA"
+          src="https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/qgGrRlgAtNYML3DLuez08/AO8uzgsAOttsUxZS5qTTX/w=400"
+          className="w-full h-full flex md:hidden"
+        />
+        <img
+          // src="https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/qgGrRlgAtNYML3DLuez08/PRUCIodOQTxtF0_CnNCGA"
+          src="https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/qgGrRlgAtNYML3DLuez08/AO8uzgsAOttsUxZS5qTTX"
+          className="w-full h-full hidden md:flex"
+        />
+      </div>
+      <Navbar />
+      <HeroMessage />
+      <footer className="flex flex-col space-y-5 md:flex-row md:space-y-0 justify-between px-[5vw] py-3 items-center">
+        <div className="flex flex-col text-primary/70">
+          <p>Lambda Images is my submission for Aws Lambda Hackathon, 2025</p>
+          <p>Hosted on Devpost</p>
+        </div>
+        <div>Github</div>
+      </footer>
     </div>
   );
 }

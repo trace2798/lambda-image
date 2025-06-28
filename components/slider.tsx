@@ -32,7 +32,7 @@ export const Slider = ({
       onMouseLeave={() => setIsDragging(false)}
     >
       <div
-        className="relative w-full max-w-[700px] aspect-[70/45] m-auto overflow-hidden select-none"
+        className="relative w-full max-w-3xl aspect-[70/45] m-auto overflow-hidden select-none"
         onMouseMove={handleMove}
         onMouseDown={() => setIsDragging(true)}
       >
