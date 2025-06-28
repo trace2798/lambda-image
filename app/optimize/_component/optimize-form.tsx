@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { toast } from "sonner";
 
@@ -70,7 +70,8 @@ interface FileWithPreview extends FileWithPath {
 
 const OptimizeForm = () => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
-  // const router = useRouter();
+  const [origWidth, setOrigWidth] = useState<number | null>(null);
+  const [origHeight, setOrigHeight] = useState<number | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,11 +86,53 @@ const OptimizeForm = () => {
       sharpen: undefined,
     },
   });
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (files.length === 0) {
-      toast.error("Please select at least one image");
+
+  useEffect(() => {
+    if (!files[0]) {
+      setOrigWidth(null);
+      setOrigHeight(null);
       return;
     }
+    const file = files[0];
+    const imageUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      setOrigWidth(img.naturalWidth);
+      setOrigHeight(img.naturalHeight);
+
+      form.setValue("width", img.naturalWidth);
+      form.setValue("height", img.naturalHeight);
+
+      URL.revokeObjectURL(imageUrl);
+    };
+    img.onerror = () => {
+      setOrigWidth(null);
+      setOrigHeight(null);
+      URL.revokeObjectURL(imageUrl);
+    };
+    img.src = imageUrl;
+  }, [files, form.setValue]);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("VALUES:", values);
+    const { key, url: uploadUrl } = await fetch(
+      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign-free",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filename: files[0].name,
+          contentType: files[0].type,
+        }),
+      }
+    ).then((r) => r.json());
+
+    // 2) Upload
+    await fetch(uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": files[0].type },
+      body: files[0],
+    });
   }
   const isLoading = form.formState.isSubmitting;
   return (
@@ -110,7 +153,14 @@ const OptimizeForm = () => {
           </div>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-1 items-center gap-5">
-              <ImageUploaderFree files={files} onFilesChange={setFiles} />
+              <div className="flex flex-col space-y-2">
+                <FormLabel>Image uploader</FormLabel>
+                <ImageUploaderFree files={files} onFilesChange={setFiles} />
+                <FormDescription className="mt-3">
+                  One image at a time
+                </FormDescription>
+              </div>
+
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="flex justify-end hover:cursor-pointer">
@@ -127,13 +177,18 @@ const OptimizeForm = () => {
                             <Input
                               type="number"
                               min={1}
+                              disabled={origWidth === null}
+                              max={origWidth ?? undefined}
                               {...field}
                               value={field.value ?? ""}
                               className="w-full max-w-[200px]"
                             />
                           </FormControl>
                           <FormDescription>
-                            Desired width in pixels
+                            Desired width in pixels. <br />
+                            {origWidth
+                              ? `Max ${origWidth}px`
+                              : "Upload an image to set limits."}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -149,37 +204,24 @@ const OptimizeForm = () => {
                             <Input
                               type="number"
                               min={1}
+                              disabled={origHeight === null}
+                              max={origHeight ?? undefined}
                               {...field}
                               value={field.value ?? ""}
                               className="w-full max-w-[200px]"
                             />
                           </FormControl>
                           <FormDescription>
-                            Desired height in pixels
+                            Desired height in pixels. <br />
+                            {origHeight
+                              ? `Max ${origHeight}px`
+                              : "Upload an image to set limits."}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={form.control}
-                      name="grayscale"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col space-y-1 w-full max-w-[200px] items-start">
-                          <FormLabel>Grayscale</FormLabel>
-                          <FormControl>
-                            <Switch
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            Render the image in grayscale
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+
                     <FormField
                       control={form.control}
                       name="format"
@@ -330,14 +372,35 @@ const OptimizeForm = () => {
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="grayscale"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col space-y-1 w-full max-w-[200px] items-start">
+                          <FormLabel>Grayscale</FormLabel>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Render the image in grayscale
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </div>
           </div>
-          <Button disabled={isLoading} type="submit">
-            Optimize Image
-          </Button>
+          <div className="w-full flex justify-center">
+            <Button disabled={isLoading || files.length === 0} type="submit">
+              Optimize Image
+            </Button>
+          </div>
         </form>
       </Form>
     </>

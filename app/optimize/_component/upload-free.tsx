@@ -219,7 +219,7 @@ export function ImageUploaderFree({
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    maxFiles: 2,
+    maxFiles: 1,
     maxSize: 20 * 1024 * 1024,
     accept: { "image/*": [".png", ".jpeg", ".jpg", ".webp"] },
   });
@@ -257,7 +257,7 @@ export function ImageUploaderFree({
             <p className="text-base lg:text-lg ">
               Drag &apos;n&apos; drop image here
             </p>
-            <Button variant="outline" className="mt-3">
+            <Button type="button" variant="outline" className="mt-3">
               Or click to select files
             </Button>
           </div>
