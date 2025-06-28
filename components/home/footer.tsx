@@ -10,7 +10,11 @@ const Footer: FC<FooterProps> = ({}) => {
           <p>Lambda Images is my submission for Aws Lambda Hackathon, 2025</p>
           <p>Hosted on Devpost</p>
         </div>
-        <div>Github</div>
+        <div className="hover:cursor-pointer hover:text-indigo-400">
+          <a href="https://github.com/trace2798/lambda-image" target="_blank">
+            Github
+          </a>
+        </div>
       </footer>
     </>
   );

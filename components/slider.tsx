@@ -54,7 +54,7 @@ export const Slider = ({
 
         {showCompressed && (
           <div className="absolute top-2 left-2 text-xs pointer-events-none">
-            <Badge variant="secondary">Compressed</Badge>
+            <Badge variant="secondary">Optimized</Badge>
           </div>
         )}
         {showOriginal && (
