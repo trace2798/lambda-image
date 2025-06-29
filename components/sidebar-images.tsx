@@ -124,7 +124,7 @@ export default function SidebarImages() {
                         <img
                           src={`https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${img.publicId}/w=25,h=25`}
                           alt={img.alt ?? "no alt provided"}
-                          className="w-8 h-8 rounded-sm object-cover"
+                          className="rounded-sm object-cover"
                         />
                         <span className="font-medium">{img.publicId}</span>
                       </HoverCardTrigger>
@@ -132,7 +132,7 @@ export default function SidebarImages() {
                         <img
                           src={`https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${img.publicId}/w=250,h=250`}
                           alt={img.alt ?? "no alt provided"}
-                          className="w-8 h-8 rounded-sm object-cover"
+                          className="rounded-sm object-cover"
                         />
                       </HoverCardContent>
                     </HoverCard>
