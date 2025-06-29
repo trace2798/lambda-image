@@ -1,3 +1,4 @@
+import BgImage from "@/components/home/bg-image";
 import Footer from "@/components/home/footer";
 import HeroMessage from "@/components/home/hero-message";
 import Navbar from "@/components/home/navbar";
@@ -6,14 +7,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col w-full h-full min-h-screen justify-between">
       <div className="absolute inset-0 -z-10 ">
-        <img
-          src="https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/qgGrRlgAtNYML3DLuez08/AO8uzgsAOttsUxZS5qTTX/w=400"
-          className="w-full h-full flex md:hidden"
-        />
-        <img
-          src="https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/qgGrRlgAtNYML3DLuez08/AO8uzgsAOttsUxZS5qTTX"
-          className="w-full h-full hidden md:flex"
-        />
+        <BgImage />
       </div>
       <Navbar />
       <HeroMessage />
