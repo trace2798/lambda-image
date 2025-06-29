@@ -20,6 +20,7 @@ import {
   HoverCardContent,
 } from "@/components/ui/hover-card";
 import { CircleQuestionMarkIcon } from "lucide-react";
+import AskAI from "./_components/ask-ai";
 
 interface ImagePublicIdPageProps {
   params: Promise<{ workspaceId: string; imagePublicId: string }>;
@@ -161,17 +162,18 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
                     </HoverCardContent>
                   </HoverCard>
                 </Label>{" "}
-                <p className="text-sm">
+                <code className="text-sm">
                   <span>Compressed url mentioned above</span>
                   <span> + {"/transformation parameter"}</span>
-                </p>
+                </code>
               </div>
             </div>
 
             <div className="mt-3">
-              <Button variant={"outline"} size={"sm"} className="">
-                Generate url with AI
-              </Button>
+              <AskAI
+                baseUrl={onFlyUrl}
+                dimensions={`${image?.originalWidth}×${image?.originalHeight}`}
+              />
             </div>
           </div>
           <Separator />
