@@ -173,7 +173,7 @@ const OptimizeForm = () => {
     const transformsRaw = transforms.join(",");
     console.log("TRANSFORM RAW", transformsRaw);
 
-    const transformRes = await fetch("http://localhost:3001/transform-free", {
+    const transformRes = await fetch("https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/transform-free", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ key, transforms: transformsRaw }),

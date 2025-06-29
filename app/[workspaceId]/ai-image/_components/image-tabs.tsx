@@ -24,7 +24,7 @@ export function ImageTabs({ workspaceId }: { workspaceId: string }) {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch("http://localhost:3001/generate-image", {
+      const res = await fetch("https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, workspaceId }),

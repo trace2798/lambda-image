@@ -33,7 +33,7 @@ export default function SidebarImages() {
   const { data, error, isLoading, mutate } = useSWR(
     () =>
       workspaceId
-        ? `http://localhost:3001/workspace/${workspaceId}/images?limit=10${
+        ? `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/workspace/${workspaceId}/images?limit=10${
             cursor ? `&before=${encodeURIComponent(cursor)}` : ""
           }`
         : null,
