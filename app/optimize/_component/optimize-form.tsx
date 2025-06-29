@@ -1,4 +1,10 @@
 "use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,17 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { ImageUploaderFree } from "./upload-free";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import {
   Select,
   SelectContent,
@@ -29,12 +24,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ImageUpscaleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
-import { DownloadIcon, ImageUpscaleIcon } from "lucide-react";
+import { z } from "zod";
+import { ImageUploaderFree } from "./upload-free";
 
 const formSchema = z.object({
   grayscale: z.boolean(),
@@ -142,6 +142,7 @@ const OptimizeForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("VALUES:", values);
+    setResult(null);
     const { key, url: uploadUrl } = await fetch(
       "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign-free",
       {
@@ -171,6 +172,7 @@ const OptimizeForm = () => {
     if (values.sharpen) transforms.push(`sharpen=${values.sharpen}`);
     const transformsRaw = transforms.join(",");
     console.log("TRANSFORM RAW", transformsRaw);
+
     const transformRes = await fetch("http://localhost:3001/transform-free", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -211,15 +213,18 @@ const OptimizeForm = () => {
       },
     });
     setFiles([]);
+    setOrigWidth(null);
+    setOrigHeight(null);
   }
   const isLoading = form.formState.isSubmitting;
+
   return (
     <>
-      <div className="flex flex-col space-y-5 w-full max-w-6xl">
+      <div className="flex flex-col space-y-10 w-full max-w-6xl">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-3 w-full max-w-6xl"
+            className=" w-full max-w-6xl"
           >
             <div className="flex flex-col space-y-2">
               <Label className="text-2xl font-bold uppercase">
@@ -239,10 +244,10 @@ const OptimizeForm = () => {
                     One image at a time
                   </FormDescription>
                 </div>
-
+                <Separator />
                 <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="flex justify-end hover:cursor-pointer">
+                  <AccordionItem value="item-1" className="">
+                    <AccordionTrigger className="flex justify-end hover:cursor-pointer p-2">
                       Advance Options
                     </AccordionTrigger>
                     <AccordionContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -477,6 +482,7 @@ const OptimizeForm = () => {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
+                <Separator />
               </div>
             </div>
             <div className="w-full flex justify-center">
@@ -488,9 +494,9 @@ const OptimizeForm = () => {
         </Form>
 
         {isLoading && (
-          <div className="flex flex-col space-y-3 items-center">
+          <div className="flex flex-col space-y-3 items-center pb-12">
             <Separator />
-            <h2 className="text-lg uppercase text-primary/80">
+            <h2 className="text-lg uppercase text-primary/80 ">
               Your image is being optimized
             </h2>
             <Separator />
@@ -550,12 +556,28 @@ const OptimizeForm = () => {
           </div>
         )}
         {result && (
-          <div className="flex flex-col space-y-3 items-center">
-            <Separator />
-            <h2 className="text-lg uppercase text-primary/80">Result</h2>
+          <div className="flex flex-col space-y-3 items-start pb-12">
+            <div className="flex flex-col">
+              <h2 className="text-xl text-primary w-full font-semibold">
+                RESULT
+              </h2>
+              <p className="text-primary/80 text-sm">
+                The optimized image is{" "}
+                <span className="text-green-400">
+                  {(
+                    ((result.original.size / 1024 -
+                      result.optimized.size / 1024) /
+                      (result.original.size / 1024)) *
+                    100
+                  ).toFixed(1)}
+                  %
+                </span>{" "}
+                smaller than the original
+              </p>
+            </div>
             <Separator />
             {result && (
-              <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col space-y-1">
                   <Separator />
                   <div className="flex justify-between">
