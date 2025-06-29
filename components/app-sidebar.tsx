@@ -2,23 +2,27 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { db } from "@/db";
 import { auth } from "@/lib/auth";
-import { HouseIcon, ImageIcon } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import * as React from "react";
 import { SelectWorkspace, Workspace } from "./select-workspace";
+import SidebarAIImageButton from "./sidebar-ai-image-button";
+import SidebarHomeButton from "./sidebar-home-button";
 import SignOutButton from "./sign-out-button";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import UserAccountNav from "./user-account-nav";
-import { Button } from "./ui/button";
-import SidebarHomeButton from "./sidebar-home-button";
-import SidebarAIImageButton from "./sidebar-ai-image-button";
+import SidebarImages from "./sidebar-images";
 
 export async function AppSidebar({
   ...props
@@ -37,6 +41,7 @@ export async function AppSidebar({
   if (!workspaces) {
     redirect("/onboard");
   }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex flex-col">
@@ -51,23 +56,8 @@ export async function AppSidebar({
       </SidebarHeader>
       <SidebarContent className="flex flex-col items-center pt-3 px-[1vw]">
         <SidebarHomeButton />
-        <SidebarAIImageButton/>
-        {/* {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))} */}
+        <SidebarAIImageButton />
+        <SidebarImages />
       </SidebarContent>
       <SidebarFooter>
         <UserAccountNav
