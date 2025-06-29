@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <div className="flex flex-col w-full h-full min-h-screen justify-between">
       <Navbar />
-      <div className="flex w-full justify-center h-full min-h-[80vh]  px-[5vw]">
+      <div className="flex w-full justify-center h-full min-h-[80vh]  px-[5vw] mt-12">
         <OptimizeForm />
       </div>
       <Footer />
