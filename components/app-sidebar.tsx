@@ -2,11 +2,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { db } from "@/db";
@@ -18,11 +14,12 @@ import * as React from "react";
 import { SelectWorkspace, Workspace } from "./select-workspace";
 import SidebarAIImageButton from "./sidebar-ai-image-button";
 import SidebarHomeButton from "./sidebar-home-button";
+import SidebarImages from "./sidebar-images";
 import SignOutButton from "./sign-out-button";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import UserAccountNav from "./user-account-nav";
-import SidebarImages from "./sidebar-images";
+import Link from "next/link";
 
 export async function AppSidebar({
   ...props
@@ -45,10 +42,19 @@ export async function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex flex-col">
-        <div className="flex justify-center space-x-2 items-center">
-          <ImageIcon className="size-5" />
-          <p className="text-2xl ">Lambda Image</p>
-        </div>
+        <Link
+          href={"/"}
+          prefetch={false}
+          className="hover:cursor-pointer hover:underline"
+        >
+          <div className="flex justify-center space-x-2 items-center">
+            <div className="mt-1">
+              <ImageIcon className="size-5" />
+            </div>
+            <p className="text-2xl ">Lambda Image</p>
+          </div>
+        </Link>
+
         <Separator />
         <Label className="text-primary/80">Current Workspace</Label>
         <SelectWorkspace workspaces={workspaces as Workspace[]} />
