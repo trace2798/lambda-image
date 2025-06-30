@@ -62,14 +62,11 @@ const RegenerateAltButton = ({
       //       }
       //     }
       //   }
-      const res = await fetch(
-        "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate-instruction",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imagePublicId, instruction }),
-        }
-      );
+      const res = await fetch("/api/regenerate-alt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagePublicId, instruction }),
+      });
 
       if (!res.ok) {
         throw new Error(`API returned ${res.status}`);

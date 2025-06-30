@@ -26,7 +26,6 @@ export async function POST(request: Request) {
   try {
     payload = JSON.parse(text);
   } catch {
-    // if the upstream returned HTML or error text
     return NextResponse.json({ error: text }, { status: upstream.status });
   }
 

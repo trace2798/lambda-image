@@ -143,17 +143,14 @@ const OptimizeForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("VALUES:", values);
     setResult(null);
-    const { key, url: uploadUrl } = await fetch(
-      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign-free",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          filename: files[0].name,
-          contentType: files[0].type,
-        }),
-      }
-    ).then((r) => r.json());
+    const { key, url: uploadUrl } = await fetch("/api/presign-free", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        filename: files[0].name,
+        contentType: files[0].type,
+      }),
+    }).then((r) => r.json());
 
     await fetch(uploadUrl, {
       method: "PUT",
@@ -171,9 +168,8 @@ const OptimizeForm = () => {
     if (values.blur) transforms.push(`blur=${values.blur}`);
     if (values.sharpen) transforms.push(`sharpen=${values.sharpen}`);
     const transformsRaw = transforms.join(",");
-    console.log("TRANSFORM RAW", transformsRaw);
 
-    const transformRes = await fetch("https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/transform-free", {
+    const transformRes = await fetch("/api/transform-free", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ key, transforms: transformsRaw }),

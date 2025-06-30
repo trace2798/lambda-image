@@ -36,7 +36,7 @@ const AskAI = ({
     setError(null);
     try {
       const res = await fetch(
-        "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate-url",
+        "/api/generate-url",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

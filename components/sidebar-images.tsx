@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
-import { Skeleton } from "./ui/skeleton";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
+import { Skeleton } from "./ui/skeleton";
 
 // const fetcher = async (url: string) => {
 //   const res = await fetch(url);
@@ -43,39 +43,6 @@ export default function SidebarImages() {
   const router = useRouter();
   const [cursor, setCursor] = useState<string | null>(null);
 
-  // const { data, error, isLoading, mutate } = useSWR(
-  //   () =>
-  //     workspaceId
-  //       ? `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/workspace/${workspaceId}/images?limit=10${
-  //           cursor ? `&before=${encodeURIComponent(cursor)}` : ""
-  //         }`
-  //       : null,
-  //   fetcher,
-  //   {
-  //     revalidateOnFocus: false,
-  //     keepPreviousData: true,
-  //   }
-  // );
-  // const { data, error, isLoading, mutate } = useSWR(
-  //   () =>
-  //     workspaceId
-  //       ? `/api/workspace-image/${workspaceId}${
-  //           cursor ? `&before=${encodeURIComponent(cursor)}` : ""
-  //         }`
-  //       : null,
-  //   fetcher,
-  //   { revalidateOnFocus: false, keepPreviousData: true }
-  // );
-  // const key = workspaceId
-  //   ? `/api/workspace-image/${workspaceId}${
-  //       cursor ? `?before=${encodeURIComponent(cursor)}` : ""
-  //     }`
-  //   : null;
-
-  // const { data, error, isLoading, mutate } = useSWR(key, fetcher, {
-  //   revalidateOnFocus: false,
-  //   keepPreviousData: true,
-  // });
   const shouldFetch = !!workspaceId;
   const swrKey = shouldFetch
     ? ["/api/workspace-image", { workspaceId, before: cursor ?? "" }]
