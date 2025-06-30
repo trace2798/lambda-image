@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lambda Images
 
-## Getting Started
+This is a repository for the front-end for my submission to Aws Lambda Hackathon 2025, hosted on Devpost. In this application user can upload their desired image and get a optimized version of it. All the endpoint for optimization is [available here](https://github.com/trace2798/lambda-on-fly-image-compression)
 
-First, run the development server:
+New Features:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Upload image to get a optimized version of the image.
+- Use the generated compress url to do more transformation on the fly using the correct parameters.
+- Generate alternate text using AI model.
+
+
+### Prerequisites
+
+**Node version 20.x.x**
+
+### Cloning the repository
+
+```shell
+git clone https://github.com/trace2798/lambda-image.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install packages
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```shell
+npm i
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Setup .env file
 
-## Learn More
+```js
+TURSO_DATABASE_URL=""
+TURSO_AUTH_TOKEN=""
 
-To learn more about Next.js, take a look at the following resources:
+BETTER_AUTH_SECRET=""
+BETTER_AUTH_URL="http://localhost:3000"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# required if you add api-auth to the endoints
+APIGATEWAY_API_KEY=""
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# For github oAuth authentication. To use just email password go to lib-> auth.ts and under  emailPassword turn  disableSignUp to false.
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
 
-## Deploy on Vercel
+# when you run the server locally you can use http://localhost:3001 For deployed instance it will be the API Gateway base url.
+LAMBDA_BASE_URL=""
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Install Dependencies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```shell
+npm install
+
+```
+
+### Start the app
+
+```shell
+npm run dev
+```
