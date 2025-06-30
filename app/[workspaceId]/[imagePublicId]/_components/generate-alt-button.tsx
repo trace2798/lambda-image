@@ -2,6 +2,7 @@
 
 import { addAltToImage } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { SparkleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -48,7 +49,7 @@ const GenerateAltButton = ({ imagePublicId }: { imagePublicId: string }) => {
       //     }
       //   }
       //without streaming
-      const res = await fetch("/api/generate", {
+      const res = await fetch("/api/generate-alt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imagePublicId }),
@@ -81,7 +82,7 @@ const GenerateAltButton = ({ imagePublicId }: { imagePublicId: string }) => {
 
   return (
     <>
-      <div className="space-y-2 flex flex-col justify-center items-center">
+      <div className="space-y-2 flex flex-col justify-center items-center w-full">
         <Button
           variant="secondary"
           className="w-full max-w-[200px]"
@@ -100,10 +101,14 @@ const GenerateAltButton = ({ imagePublicId }: { imagePublicId: string }) => {
         {error && <p className="text-sm text-red-600">Error: {error}</p>}
 
         {altText && (
-          <div className="flex flex-col justify-center space-y-3">
-            <p className="mt-2 p-2 text-sm rounded border w-full max-w-4xl mx-auto ">
-              {altText}
-            </p>
+          <div className="flex flex-col justify-center space-y-3 w-full">
+            <Textarea
+              className="mt-2 p-2 text-sm rounded border w-full mx-auto "
+              value={altText}
+              onChange={(e) => setAltText(e.target.value)}
+              rows={4}
+            />
+
             <Button
               variant={"outline"}
               className="w-full max-w-[200px]"
