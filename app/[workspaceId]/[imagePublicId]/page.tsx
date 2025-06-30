@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/hover-card";
 import { CircleQuestionMarkIcon } from "lucide-react";
 import AskAI from "./_components/ask-ai";
+import UrlHelper from "./_components/url-helper";
 
 interface ImagePublicIdPageProps {
   params: Promise<{ workspaceId: string; imagePublicId: string }>;
@@ -170,10 +171,11 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
             </div>
 
             <div className="mt-3">
-              <AskAI
+              {/* <AskAI
                 baseUrl={onFlyUrl}
                 dimensions={`${image?.originalWidth}×${image?.originalHeight}`}
-              />
+              /> */}
+              <UrlHelper baseUrl={onFlyUrl} />
             </div>
           </div>
           <Separator />
