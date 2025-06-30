@@ -1,8 +1,7 @@
-
 const Footer = ({}) => {
   return (
     <>
-      <footer className="grid grid-cols-1 lg:grid-cols-3 gap-5 px-[5vw] pt-3 pb-5 border-t">
+      <footer className="grid grid-cols-1 lg:grid-cols-3 gap-5 px-[5vw] pt-3 pb-5 border-t font-generalSans">
         <div className="flex flex-col text-primary/70">
           <p>
             Lambda Images is my submission for Aws Lambda Hackathon, 2025.

@@ -5,10 +5,10 @@ const HeroMessage = ({}) => {
     <>
       <div className="flex flex-col w-full max-w-7xl mx-auto px-[5vw] space-y-5 justify-center items-center">
         <div className="flex flex-col justify-center items-center space-y-5 w-full mx-auto backdrop-blur-xs p-5">
-          <h1 className="text-3xl md:text-6xl font-bold">
+          <h1 className="text-3xl md:text-6xl font-bold font-generalSans">
             Image Optimization That Converts
           </h1>
-          <h2 className="text-lg text-primary/80">
+          <h2 className="text-lg text-primary/80 font-bespokeSerif">
             Deliver optimized, responsive images instantly. Designed for
             business-critical applications.
           </h2>

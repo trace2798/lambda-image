@@ -120,3 +120,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+@theme inline {
+  --font-generalSans: var(--font-general-sans);
+  --font-bespokeSerif: var(--font-bespoke-serif);
+}

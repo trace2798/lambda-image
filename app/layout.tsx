@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
+import localFont from "next/font/local";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const generalSans = localFont({
+  src: "../public/assets/fonts/GeneralSans-Variable.woff2",
+  display: "swap",
+  variable: "--font-general-sans",
+});
 
+const bespokeSerif = localFont({
+  src: "../public/assets/fonts/BespokeSerif-Variable.woff2",
+  display: "swap",
+  variable: "--font-bespoke-serif",
+});
 
 export const metadata: Metadata = {
   title: "Lambda Images",
@@ -45,9 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${generalSans.variable} ${bespokeSerif.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
