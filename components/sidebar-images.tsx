@@ -14,36 +14,90 @@ import {
 } from "./ui/sidebar";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const text = await res.text();
-  try {
-    return JSON.parse(text);
-  } catch (e) {
-    console.error("Invalid JSON from", url, "\n—— raw text ——\n", text);
-    throw e;
-  }
-};
+// const fetcher = async (url: string) => {
+//   const res = await fetch(url);
+//   const text = await res.text();
+//   try {
+//     return JSON.parse(text);
+//   } catch (e) {
+//     console.error("Invalid JSON from", url, "\n—— raw text ——\n", text);
+//     throw e;
+//   }
+// };
+
+async function postFetcher(
+  url: string,
+  body: Record<string, any>
+): Promise<any> {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
 
 export default function SidebarImages() {
   const { workspaceId, imagePublicId } = useParams();
   const router = useRouter();
   const [cursor, setCursor] = useState<string | null>(null);
 
+  // const { data, error, isLoading, mutate } = useSWR(
+  //   () =>
+  //     workspaceId
+  //       ? `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/workspace/${workspaceId}/images?limit=10${
+  //           cursor ? `&before=${encodeURIComponent(cursor)}` : ""
+  //         }`
+  //       : null,
+  //   fetcher,
+  //   {
+  //     revalidateOnFocus: false,
+  //     keepPreviousData: true,
+  //   }
+  // );
+  // const { data, error, isLoading, mutate } = useSWR(
+  //   () =>
+  //     workspaceId
+  //       ? `/api/workspace-image/${workspaceId}${
+  //           cursor ? `&before=${encodeURIComponent(cursor)}` : ""
+  //         }`
+  //       : null,
+  //   fetcher,
+  //   { revalidateOnFocus: false, keepPreviousData: true }
+  // );
+  // const key = workspaceId
+  //   ? `/api/workspace-image/${workspaceId}${
+  //       cursor ? `?before=${encodeURIComponent(cursor)}` : ""
+  //     }`
+  //   : null;
+
+  // const { data, error, isLoading, mutate } = useSWR(key, fetcher, {
+  //   revalidateOnFocus: false,
+  //   keepPreviousData: true,
+  // });
+  const shouldFetch = !!workspaceId;
+  const swrKey = shouldFetch
+    ? ["/api/workspace-image", { workspaceId, before: cursor ?? "" }]
+    : null;
+
   const { data, error, isLoading, mutate } = useSWR(
-    () =>
-      workspaceId
-        ? `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/workspace/${workspaceId}/images?limit=10${
-            cursor ? `&before=${encodeURIComponent(cursor)}` : ""
-          }`
-        : null,
-    fetcher,
+    swrKey,
+
+    async ([url, body]) => {
+      const res = await fetch("/api/workspace-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    },
     {
       revalidateOnFocus: false,
       keepPreviousData: true,
     }
   );
-
   const [allImages, setAllImages] = useState<any[]>([]);
   useEffect(() => {
     if (data?.images) {
