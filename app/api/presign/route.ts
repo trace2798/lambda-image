@@ -29,13 +29,14 @@ export async function POST(request: Request) {
         body: JSON.stringify({ filename, contentType, userId, workspaceId }),
       }
     );
-
+    console.log("GOT PRESIGN INSIDE NEXTJS API");
     const data = await upstreamRes.json();
+    console.log("GOT PRESIGN INSIDE NEXTJS API Data", data);
     if (!upstreamRes.ok) {
       return NextResponse.json(data, { status: upstreamRes.status });
     }
-    const { key, url } = data;
-    return NextResponse.json({ key, uploadUrl: url }, { status: 200 });
+    // const { key, url } = data;
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("Error in /api/presign-free:", error);
     return NextResponse.json(
