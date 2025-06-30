@@ -67,7 +67,7 @@ export default function SignUpForm({
           //show loading
         },
         onSuccess: (ctx) => {
-          console.log("On Success", ctx);
+          //console.log("On Success", ctx);
           toast.dismiss(loadingToastId);
           toast.success("Signed up successfully");
           setSubmitting(false);
@@ -81,7 +81,7 @@ export default function SignUpForm({
         },
       }
     );
-    console.log("Data:", data);
+    //console.log("Data:", data);
   };
 
   return (

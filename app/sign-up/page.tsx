@@ -6,7 +6,7 @@ import Footer from "@/components/home/footer";
 
 const Page = async ({}) => {
   const disableSignUp = auth.options.emailAndPassword.disableSignUp;
-  console.log("Validation", disableSignUp);
+  //console.log("Validation", disableSignUp);
   return (
     <>
       <div className="flex flex-col w-full h-full min-h-screen justify-between items-center">

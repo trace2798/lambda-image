@@ -17,7 +17,7 @@ export async function createWorkspace(userId: string, title: string) {
       createdAt: new Date(),
     })
     .returning({ id: workspace.id });
-  console.log(response);
+  //console.log(response);
   return {
     id: response[0].id,
     status: 200,
@@ -34,7 +34,7 @@ export async function addAltToImage(publicId: string, alt: string) {
     .where(eq(image.publicId, publicId))
     .returning({ id: image.id });
 
-  console.log("Drizzle update response:", updatedRow);
+  //console.log("Drizzle update response:", updatedRow);
 
   return {
     id: updatedRow.id,

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    console.log("COMPRESS STEP 1");
+    //console.log("COMPRESS STEP 1");
     const { key, workspaceId, imgType } = await request.json();
     if (!key || !workspaceId || !imgType) {
       return NextResponse.json(
@@ -22,7 +22,14 @@ export async function POST(request: Request) {
     if (!apiKey) {
       return NextResponse.json({ error: "Missing API key" }, { status: 500 });
     }
-    console.log("COMPRESS STEP 2");
+    const baseUrl = process.env.LAMBDA_BASE_URL!;
+    if (!baseUrl) {
+      return NextResponse.json(
+        { error: "Something went wrong" },
+        { status: 500 }
+      );
+    }
+
     const upstreamRes = await fetch(
       "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/compress",
       {
@@ -31,10 +38,10 @@ export async function POST(request: Request) {
         body: JSON.stringify({ key, workspaceId, imgType }),
       }
     );
-    console.log("COMPRESS STEP 3");
+    //console.log("COMPRESS STEP 3");
     const data = await upstreamRes.json();
-    console.log("UPSTREAM DATA", data);
-    console.log("COMPRESS STEP 4");
+    //console.log("UPSTREAM DATA", data);
+    //console.log("COMPRESS STEP 4");
     if (!upstreamRes.ok) {
       return NextResponse.json(data, { status: upstreamRes.status });
     }

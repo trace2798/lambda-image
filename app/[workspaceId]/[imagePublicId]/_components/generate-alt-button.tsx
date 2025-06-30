@@ -76,7 +76,7 @@ const GenerateAltButton = ({ imagePublicId }: { imagePublicId: string }) => {
 
   const handleSaveAlt = async () => {
     const response = await addAltToImage(imagePublicId, altText);
-    console.log("Response DB", response);
+    //console.log("Response DB", response);
     router.refresh();
   };
 

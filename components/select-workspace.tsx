@@ -21,7 +21,7 @@ export function SelectWorkspace({ workspaces }: { workspaces: Workspace[] }) {
   const params = useParams();
   const router = useRouter();
   const [value, setValue] = React.useState(params.workspaceId ?? "");
-  console.log("PARAMS", params.workspaceId);
+  //console.log("PARAMS", params.workspaceId);
   return (
     <Select
       value={value as string}

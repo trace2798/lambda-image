@@ -23,7 +23,7 @@ const Page = async ({}) => {
     where: (w, { eq }) => eq(w.userId, session.user.id),
     orderBy: (w, { asc }) => asc(w.createdAt),
   });
-  console.log("WORKSPACE:", workspaces);
+  //console.log("WORKSPACE:", workspaces);
   if (workspaces.length === 0) {
     redirect("/onboard");
   }

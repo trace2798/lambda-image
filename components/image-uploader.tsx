@@ -47,7 +47,7 @@ export function ImageUploader({
     setUploadProgress(10);
 
     for (const [index, file] of files.entries()) {
-      console.log("FIle", file);
+      //console.log("FIle", file);
       setUploadProgressIndex(index);
       setUploadProgress(20);
       try {
@@ -62,14 +62,14 @@ export function ImageUploader({
             workspaceId,
           }),
         });
-        console.log("Presifned call done");
+        //console.log("Presifned call done");
         if (!presignRes.ok) throw new Error("Failed to get presigned URL");
         const { key, url: uploadUrl } = await presignRes.json();
-        // console.log("KEY", key);
-        // console.log("URL", uploadUrl);
-        // console.log("GOT PREDEFINED URL", { key, uploadUrl });
+        // //console.log("KEY", key);
+        // //console.log("URL", uploadUrl);
+        // //console.log("GOT PREDEFINED URL", { key, uploadUrl });
         setUploadProgress(50);
-        console.log("WILL UPLOAD NOW");
+        //console.log("WILL UPLOAD NOW");
         const uploadRes = await fetch(uploadUrl, {
           method: "PUT",
           headers: {
@@ -77,11 +77,11 @@ export function ImageUploader({
           },
           body: file,
         });
-        console.log("uploadRes");
+        //console.log("uploadRes");
         if (!uploadRes.ok) {
           toast.error("Upload to S3 Failed");
         }
-        console.log("KEY", key);
+        //console.log("KEY", key);
         const compressRes = await fetch("/api/compress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -91,7 +91,7 @@ export function ImageUploader({
             imgType: "user",
           }),
         });
-        console.log("Compress Res", compressRes);
+        //console.log("Compress Res", compressRes);
         toast.success(`Successfully uploaded ${file.name}`);
       } catch (error) {
         console.error("Upload error: ", error);

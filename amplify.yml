@@ -13,6 +13,7 @@ frontend:
         - echo "APIGATEWAY_API_KEY=$APIGATEWAY_API_KEY" >> .env.production
         - echo "GITHUB_CLIENT_ID=$GITHUB_CLIENT_ID" >> .env.production
         - echo "GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET" >> .env.production
+        - echo "LAMBDA_BASE_URL=$LAMBDA_BASE_URL" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

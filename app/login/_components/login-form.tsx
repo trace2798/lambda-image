@@ -58,11 +58,11 @@ export default function LoginForm() {
       },
       {
         onRequest: (ctx) => {
-          console.log("loading");
+          //console.log("loading");
           toast.loading("Logging you in...");
         },
         onSuccess: (ctx) => {
-          console.log("On Success", ctx);
+          //console.log("On Success", ctx);
           toast.success("Logged in successfully");
           setSubmitting(false);
           router.push("/dashboard");
@@ -74,7 +74,7 @@ export default function LoginForm() {
         },
       }
     );
-    console.log("Data:", data);
+    //console.log("Data:", data);
   };
   const handleGithubSignIn = async (e: React.FormEvent) => {
     setSubmitting(true);
@@ -90,7 +90,7 @@ export default function LoginForm() {
           toast.loading("Logging you in...");
         },
         onSuccess: (ctx) => {
-          // // console.log("On Success", ctx);
+          // // //console.log("On Success", ctx);
           toast.success("Logged in successfully");
           setSubmitting(false);
           // router.push("/dashboard");
@@ -101,7 +101,7 @@ export default function LoginForm() {
         },
       }
     );
-    console.log("GITHUB DATA", githubData);
+    //console.log("GITHUB DATA", githubData);
   };
   const email = form.watch("email");
   const password = form.watch("password");

@@ -52,13 +52,13 @@ export function ImageUploaderLocal() {
             contentType: file.type,
           }),
         });
-        console.log("GOT PRESIGN URL");
+        //console.log("GOT PRESIGN URL");
         if (!presignRes.ok) {
           throw new Error(`Presign failed: ${presignRes.status}`);
         }
         const { key, url } = (await presignRes.json()) as any;
-        console.log("pre sign url:", url);
-        console.log("WILL START UPLOADING");
+        //console.log("pre sign url:", url);
+        //console.log("WILL START UPLOADING");
         const uploadRes = await fetch(url, {
           method: "PUT",
           headers: {
@@ -66,12 +66,12 @@ export function ImageUploaderLocal() {
           },
           body: file,
         });
-        console.log("UPLOAD DONE");
+        //console.log("UPLOAD DONE");
         if (!uploadRes.ok) {
           throw new Error(`S3 PUT failed: ${uploadRes.status}`);
         }
         const publicUrl = `https://upload-lambda-compress.s3.ap-south-1.amazonaws.com/${key}`;
-        console.log("PUBLIC URL:", publicUrl);
+        //console.log("PUBLIC URL:", publicUrl);
         setOriginalUrl(publicUrl);
         toast.success("Image uploaded!");
       } catch (err: any) {

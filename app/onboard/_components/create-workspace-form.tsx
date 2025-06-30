@@ -53,8 +53,8 @@ export default function CreateWorkspaceForm({
       form.getValues("title")
     );
     if (response.status === 200) {
-      console.log("RESPONSE ID", response);
-      console.log("Data:");
+      //console.log("RESPONSE ID", response);
+      //console.log("Data:");
       toast.success("Workspace Created");
       setSubmitting(true);
       router.push(`/${response.id}`);

@@ -141,7 +141,7 @@ const OptimizeForm = () => {
   }, [files, form.setValue]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("VALUES:", values);
+    //console.log("VALUES:", values);
     setResult(null);
     const preSignFreeRes = await fetch("/api/presign-free", {
       method: "POST",
@@ -152,7 +152,7 @@ const OptimizeForm = () => {
       }),
     });
     const { key, url: uploadUrl } = await preSignFreeRes.json();
-    console.log("PRESIGNED RESPONSE", key, uploadUrl);
+    //console.log("PRESIGNED RESPONSE", key, uploadUrl);
     await fetch(uploadUrl, {
       method: "PUT",
       headers: { "Content-Type": files[0].type },
@@ -189,7 +189,7 @@ const OptimizeForm = () => {
       transforms.push(`sharpen=${values.sharpen}`);
     }
     const transformsRaw = transforms.join(",");
-    console.log("TRANSFORM RAW", transformsRaw);
+    //console.log("TRANSFORM RAW", transformsRaw);
     const transformRes = await fetch("/api/transform-free", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

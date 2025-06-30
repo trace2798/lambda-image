@@ -2,6 +2,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+const baseUrl = process.env.LAMBDA_BASE_URL!;
+
+
 export async function POST(request: Request) {
   const { workspaceId, before } = await request.json();
 
@@ -18,9 +21,8 @@ export async function POST(request: Request) {
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
   }
-  const upstreamUrl = new URL(
-    `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/workspace/${workspaceId}/images`
-  );
+
+  const upstreamUrl = new URL(`${baseUrl}/workspace/${workspaceId}/images`);
   upstreamUrl.searchParams.set("limit", "10");
   if (before) upstreamUrl.searchParams.set("before", before);
 

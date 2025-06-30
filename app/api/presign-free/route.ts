@@ -22,9 +22,9 @@ export async function POST(request: Request) {
       }
     );
 
-    console.log("GOT PRESIGN INSIDE NEXTJS API");
+    //console.log("GOT PRESIGN INSIDE NEXTJS API");
     const data = await upstreamRes.json();
-    console.log("GOT PRESIGN INSIDE NEXTJS API Data", data);
+    //console.log("GOT PRESIGN INSIDE NEXTJS API Data", data);
     if (!upstreamRes.ok) {
       return NextResponse.json(data, { status: upstreamRes.status });
     }

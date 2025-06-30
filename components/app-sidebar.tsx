@@ -34,7 +34,7 @@ export async function AppSidebar({
     where: (w, { eq }) => eq(w.userId, session.user.id),
     orderBy: (w, { asc }) => asc(w.createdAt),
   });
-  console.log(workspaces);
+  //console.log(workspaces);
   if (!workspaces) {
     redirect("/onboard");
   }
