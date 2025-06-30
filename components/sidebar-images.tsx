@@ -25,19 +25,6 @@ import { Skeleton } from "./ui/skeleton";
 //   }
 // };
 
-async function postFetcher(
-  url: string,
-  body: Record<string, any>
-): Promise<any> {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
-
 export default function SidebarImages() {
   const { workspaceId, imagePublicId } = useParams();
   const router = useRouter();
@@ -124,7 +111,7 @@ export default function SidebarImages() {
     <SidebarGroup>
       <SidebarGroupLabel>Images</SidebarGroupLabel>
       <SidebarGroupContent>
-        <SidebarMenu className="flex flex-col space-y-3">
+        <SidebarMenu className="flex flex-col space-y-2">
           {allImages.map((img) => {
             const isActive = img.publicId === imagePublicId;
             return (
@@ -136,18 +123,18 @@ export default function SidebarImages() {
                     }
                     className={
                       "flex items-center space-x-2 hover:cursor-pointer " +
-                      (isActive ? "text-primary" : "text-primary/80")
+                      (isActive ? "text-primary bg-accent" : "text-primary/80")
                     }
                   >
                     <HoverCard>
-                      <HoverCardTrigger className="flex items-center space-x-1">
+                      <HoverCardTrigger className="flex items-center space-x-3 text-xs">
                         {" "}
                         <img
                           src={`https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspacePublicId}/${img.publicId}/w=25,h=25`}
                           alt={img.alt ?? "no alt provided"}
                           className="rounded-sm object-cover"
                         />
-                        <span className="font-medium">{img.publicId}</span>
+                        <span className="">{img.publicId}</span>
                       </HoverCardTrigger>
                       <HoverCardContent className="p-0 size-[150px]">
                         <img
