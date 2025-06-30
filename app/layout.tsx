@@ -56,7 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${generalSans.variable} ${bespokeSerif.variable} antialiased`}>
+      <body className={`${generalSans.variable} ${bespokeSerif.variable} antialiased font-generalSans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
