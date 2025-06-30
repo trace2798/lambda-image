@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function ImageTabs({ workspaceId }: { workspaceId: string }) {
   const [query, setQuery] = useState("");
@@ -65,25 +66,40 @@ export function ImageTabs({ workspaceId }: { workspaceId: string }) {
                   placeholder="Type your prompt here."
                   value={query}
                   onChange={(e) => setQuery(e.currentTarget.value)}
+                  disabled={loading}
                 />
               </div>
             </CardContent>
             <CardFooter className="flex justify-end p-0">
-              <Button variant={"secondary"} onClick={handleGenerate}>
+              <Button
+                variant={"secondary"}
+                onClick={handleGenerate}
+                disabled={loading}
+              >
                 <SparklesIcon />
                 Generate Image
               </Button>
               {error && <p className="text-sm text-red-600">Error: {error}</p>}
-
-              {imageData && (
-                <img
-                  src={imageData}
-                  alt="Generated result"
-                  style={{ maxWidth: "100%", borderRadius: 8 }}
-                />
-              )}
             </CardFooter>
           </Card>
+          <div className="w-full flex justify-center items-center">
+            {loading && (
+              <div className="flex flex-col space-y-3">
+                <div className="text-center animate-pulse">
+                  Image Generating
+                </div>
+                <Skeleton className="size-86" />
+              </div>
+            )}
+
+            {imageData && (
+              <img
+                src={imageData}
+                alt="Generated result"
+                style={{ maxWidth: "100%", borderRadius: 8 }}
+              />
+            )}
+          </div>
         </TabsContent>
         <TabsContent value="image-to-image">
           <Card>
