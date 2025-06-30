@@ -1,6 +1,6 @@
 # Lambda Images
 
-This is a repository for the front-end for my submission to Aws Lambda Hackathon 2025, hosted by Devpost. This is a nextjs application and deployed in amplify. In this application user can upload their desired image and get a optimized version of it. All the endpoint for optimization is [available here](https://github.com/trace2798/lambda-on-fly-image-compression)
+This is a repository for the front-end for my submission for Aws Lambda Hackathon 2025, hosted by Devpost. This is a nextjs application and deployed in amplify. In this application user can upload their desired image and get a optimized version of it. All the endpoint for optimization is [available here](https://github.com/trace2798/lambda-on-fly-image-compression)
 
 Features:
 
