@@ -14,9 +14,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+
 export const metadata: Metadata = {
   title: "Lambda Images",
   description: "Optimize images on the fly",
+  openGraph: {
+    title: "Lambda Images",
+    description: "Optimize images on the fly",
+    url: `https://master.d2k7qje6c3xraz.amplifyapp.com/`,
+    siteName: "lambda images",
+    images: [
+      {
+        url: `https://master.d2k7qje6c3xraz.amplifyapp.com/og.webp`,
+        width: 1200,
+        height: 675,
+      },
+    ],
+  },
+  twitter: {
+    title: "Lambda Images",
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
