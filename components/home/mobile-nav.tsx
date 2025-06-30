@@ -40,83 +40,21 @@ const MobileNavigation: FC<MobileNavigationProps> = ({}) => {
           <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
             <div className="flex flex-col space-y-3">
               <MobileLink
-                key={"home"}
-                href={"/"}
+                key={"optimize"}
+                href={"/optimize"}
                 onOpenChange={setOpen}
-                title="link to home page"
+                title="link to free optimize page"
               >
-                Home
+                Optimize <span className="text-xs">(Free)</span>
               </MobileLink>
               <MobileLink
-                key={"about"}
-                href={"/about"}
+                key={"login"}
+                href={"/login"}
                 onOpenChange={setOpen}
-                title="link to about page"
+                title="link to login page"
               >
-                About
+                Login
               </MobileLink>
-
-              <MobileLink
-                key={"team"}
-                href={"/team"}
-                onOpenChange={setOpen}
-                title="link to team page"
-              >
-                Team
-              </MobileLink>
-              <MobileLink
-                key={"publication"}
-                href={"/publications"}
-                onOpenChange={setOpen}
-                title="link to publication page"
-              >
-                Publication
-              </MobileLink>
-              {/* <MobileLink
-                key={"gallery"}
-                href={"/gallery"}
-                onOpenChange={setOpen}
-              >
-                Gallery
-              </MobileLink> */}
-              <MobileLink
-                key={"news"}
-                href={"/news"}
-                onOpenChange={setOpen}
-                title="link to news page"
-              >
-                News
-              </MobileLink>
-              {/* <Accordion type="single" collapsible>
-                <AccordionItem value="item-1" className="border-none">
-                  <AccordionTrigger className="p-0 border-none">
-                    <Button variant={"ghost"}>Centers</Button>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-0 flex flex-col">
-                    {centerOptions.map((item) => (
-                      <MobileLink
-                        key={item.title}
-                        href={item.href}
-                        onOpenChange={setOpen}
-                      >
-                        {item.title}
-                      </MobileLink>
-                    ))}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion> */}
-
-              <MobileLink
-                key={"contact"}
-                href={"/contact"}
-                onOpenChange={setOpen}
-                title="link to contact us page"
-              >
-                Contact Us
-              </MobileLink>
-              <a href="https://www.kavikrishnalab.org/" target="_blank">
-                <Button variant={"secondary"}>India Chapter</Button>
-              </a>
             </div>
           </ScrollArea>
         </SheetContent>
