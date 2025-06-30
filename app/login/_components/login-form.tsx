@@ -80,7 +80,7 @@ export default function LoginForm() {
     setSubmitting(true);
     e.preventDefault();
 
-    const { data } = await authClient.signIn.social(
+    const { data: githubData } = await authClient.signIn.social(
       {
         provider: "github",
         callbackURL: "/dashboard",
@@ -93,7 +93,7 @@ export default function LoginForm() {
           // // console.log("On Success", ctx);
           toast.success("Logged in successfully");
           setSubmitting(false);
-          router.push("/dashboard");
+          // router.push("/dashboard");
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
@@ -101,6 +101,7 @@ export default function LoginForm() {
         },
       }
     );
+    console.log("GITHUB DATA", githubData);
   };
   const email = form.watch("email");
   const password = form.watch("password");
