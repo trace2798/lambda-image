@@ -261,7 +261,7 @@ const OptimizeForm = () => {
                     One image at a time
                   </FormDescription>
                 </div>
-                <Separator />
+                {/* <Separator /> */}
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1" className="">
                     <AccordionTrigger className="flex justify-end hover:cursor-pointer p-2">
