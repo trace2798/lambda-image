@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,9 +19,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/lib/auth-client";
+import { Separator } from "@/components/ui/separator";
+import { authClient, signIn } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -35,6 +38,7 @@ const FormSchema = z.object({
 
 export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -61,6 +65,7 @@ export default function LoginForm() {
           console.log("On Success", ctx);
           toast.success("Logged in successfully");
           setSubmitting(false);
+          router.push("/dashboard");
         },
         onError: (ctx) => {
           // display the error message
@@ -71,9 +76,38 @@ export default function LoginForm() {
     );
     console.log("Data:", data);
   };
+  const handleGithubSignIn = async (e: React.FormEvent) => {
+    setSubmitting(true);
+    e.preventDefault();
+
+    const { data } = await authClient.signIn.social(
+      {
+        provider: "github",
+        callbackURL: "/dashboard",
+      },
+      {
+        onRequest: () => {
+          toast.loading("Logging you in...");
+        },
+        onSuccess: (ctx) => {
+          // // console.log("On Success", ctx);
+          toast.success("Logged in successfully");
+          setSubmitting(false);
+          router.push("/dashboard");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+          setSubmitting(false);
+        },
+      }
+    );
+  };
+  const email = form.watch("email");
+  const password = form.watch("password");
+  const isLoginDisabled = !email || !password;
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm bg-background/60">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
@@ -96,6 +130,7 @@ export default function LoginForm() {
                         type="email"
                         placeholder="john@example.com"
                         {...field}
+                        className="h-7"
                       />
                     </FormControl>
                     <FormDescription>Enter your email address.</FormDescription>
@@ -111,7 +146,7 @@ export default function LoginForm() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input type="password" {...field} className="h-7" />
                     </FormControl>
                     <FormDescription>Enter your password.</FormDescription>
                     <FormMessage />
@@ -119,22 +154,44 @@ export default function LoginForm() {
                 )}
               />
               <Button
-                disabled={submitting}
+                disabled={submitting || isLoginDisabled}
                 type="submit"
                 className="w-full hover:cursor-pointer"
+                size={"sm"}
+                variant={"default"}
               >
                 Login
               </Button>
             </div>
-            <div className="mt-4 text-center text-sm">
+            {/* <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?&nbsp;
               <Link href="/sign-up" className="underline underline-offset-4">
                 Sign Up
               </Link>
-            </div>
+            </div> */}
           </form>
         </Form>
       </CardContent>
+      <Separator />
+      <CardFooter>
+        <Button
+          onClick={handleGithubSignIn}
+          size={"sm"}
+          className="w-full"
+          variant={"default"}
+        >
+          Login with Github{" "}
+          <svg
+            role="img"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            className="size-4 mr-2"
+          >
+            <title>GitHub</title>
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+          </svg>
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

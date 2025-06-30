@@ -29,7 +29,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="sticky top-0 z-50 px-[4vw] py-3 flex items-center justify-between border-b border-muted/20 backdrop-blur-lg"
+        className="sticky top-0 z-50 px-[4vw] py-3 flex items-center justify-between border-b border-muted/20 backdrop-blur-2xl"
       >
         <div className="flex items-center">
           <Link href={"/"} className="hover:text-indigo-400">

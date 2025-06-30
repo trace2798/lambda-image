@@ -11,6 +11,8 @@ frontend:
         - echo "BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET" >> .env.production
         - echo "BETTER_AUTH_URL=$BETTER_AUTH_URL" >> .env.production
         - echo "APIGATEWAY_API_KEY=$APIGATEWAY_API_KEY" >> .env.production
+        - echo "GITHUB_CLIENT_ID=$GITHUB_CLIENT_ID" >> .env.production
+        - echo "GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
