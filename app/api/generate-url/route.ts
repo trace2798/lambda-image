@@ -1,3 +1,5 @@
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -10,7 +12,12 @@ export async function POST(request: Request) {
   if (!apiKey) {
     return NextResponse.json({ error: "Missing API key" }, { status: 500 });
   }
-
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
+  }
   try {
     const upstream = await fetch(
       "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate-url",

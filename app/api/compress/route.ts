@@ -1,3 +1,5 @@
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -8,6 +10,12 @@ export async function POST(request: Request) {
         { error: "Missing key, workspaceId, or imgType" },
         { status: 400 }
       );
+    }
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
     }
     const apiKey = process.env.APIGATEWAY_API_KEY!;
     if (!apiKey) {
