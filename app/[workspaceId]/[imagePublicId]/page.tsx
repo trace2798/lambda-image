@@ -175,7 +175,11 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
                 baseUrl={onFlyUrl}
                 dimensions={`${image?.originalWidth}×${image?.originalHeight}`}
               /> */}
-              <UrlHelper baseUrl={onFlyUrl} />
+              <UrlHelper
+                baseUrl={onFlyUrl}
+                originalWidth={image?.originalWidth as number}
+                originalHeight={image?.originalHeight as number}
+              />
             </div>
           </div>
           <Separator />

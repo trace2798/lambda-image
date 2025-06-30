@@ -1,5 +1,5 @@
 "use client";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -65,9 +65,15 @@ const formSchema = z.object({
 
 interface UrlHelperProps {
   baseUrl: string;
+  originalWidth: number;
+  originalHeight: number;
 }
 
-const UrlHelper = ({ baseUrl }: UrlHelperProps) => {
+const UrlHelper = ({
+  baseUrl,
+  originalWidth,
+  originalHeight,
+}: UrlHelperProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,14 +96,51 @@ const UrlHelper = ({ baseUrl }: UrlHelperProps) => {
     if (values.height) segments.push(`h=${values.height}`);
     if (values.gravity) segments.push(`gravity=${values.gravity}`);
     if (values.crop) segments.push(`crop=${values.crop}`);
-    if (values.blur) segments.push(`blur=${values.blur}`);
-    if (values.sharpen) segments.push(`sharpen=${values.sharpen}`);
+    if (values.blur !== undefined && values.blur >= 0.3 && values.blur < 1000)
+      segments.push(`blur=${values.blur}`);
+    if (
+      values.sharpen !== undefined &&
+      values.sharpen >= 0.000001 &&
+      values.sharpen < 1000
+    )
+      segments.push(`sharpen=${values.sharpen}`);
     if (values.grayscale) segments.push(`grayscale=true`);
     const path = segments.join(",");
     return path ? `${baseUrl}/${path}` : baseUrl;
   }, [baseUrl, values]);
 
   const [copiedText, copyToClipboard] = useCopyToClipboard();
+
+  useEffect(() => {
+    if (values.width && values.width > originalWidth) {
+      toast.error("Not recommended to upscale the image");
+    }
+  }, [values.width, originalWidth]);
+
+  useEffect(() => {
+    if (values.height && values.height > originalHeight) {
+      toast.error("Not recommended to upscale the image");
+    }
+  }, [values.height, originalHeight]);
+
+  useEffect(() => {
+    if (
+      values.blur !== undefined &&
+      (values.blur < 0.3 || values.blur > 1000)
+    ) {
+      toast.error("Blur must be between 0.3 and 1000");
+    }
+  }, [values.blur]);
+
+  useEffect(() => {
+    if (
+      values.sharpen !== undefined &&
+      (values.sharpen < 0.000001 || values.sharpen > 10)
+    ) {
+      toast.error("Sharpen sigma must be between 0.000001 and 10");
+    }
+  }, [values.sharpen]);
+
   return (
     <div className="flex flex-col space-y-10 w-full max-w-6xl">
       <Form {...form}>
