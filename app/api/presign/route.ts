@@ -9,12 +9,15 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
+    const apiKey = process.env.APIGATEWAY_API_KEY!;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Missing API key" }, { status: 500 });
+    }
     const upstreamRes = await fetch(
       "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-api-key": apiKey },
         body: JSON.stringify({ filename, contentType, userId, workspaceId }),
       }
     );

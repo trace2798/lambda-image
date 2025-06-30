@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -6,17 +6,20 @@ export async function POST(request: Request) {
     const { key, transforms } = await request.json();
     if (!key || !transforms) {
       return NextResponse.json(
-        { error: 'Missing key or transforms array' },
+        { error: "Missing key or transforms array" },
         { status: 400 }
       );
     }
-
+    const apiKey = process.env.APIGATEWAY_API_KEY!;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Missing API key" }, { status: 500 });
+    }
     // forward request to upstream transform endpoint
     const upstreamRes = await fetch(
-      'https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/transform-free',
+      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/transform-free",
       {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": apiKey },
         body: JSON.stringify({ key, transforms }),
       }
     );
@@ -31,9 +34,9 @@ export async function POST(request: Request) {
     // return transform results
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error('Error in /api/transform-free:', error);
+    console.error("Error in /api/transform-free:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
