@@ -157,7 +157,9 @@ const UrlHelper = ({
                     name="width"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Width (px)</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Width (px)
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
@@ -179,7 +181,9 @@ const UrlHelper = ({
                     name="height"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Height (px)</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Height (px)
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
@@ -201,7 +205,9 @@ const UrlHelper = ({
                     name="format"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Format</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Format
+                        </FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
@@ -228,7 +234,9 @@ const UrlHelper = ({
                     name="crop"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Crop Mode</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Crop Mode
+                        </FormLabel>
                         <FormControl>
                           <Select
                             onValueChange={field.onChange}
@@ -251,13 +259,14 @@ const UrlHelper = ({
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="gravity"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Gravity</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Gravity
+                        </FormLabel>
                         <FormControl>
                           <Select
                             onValueChange={field.onChange}
@@ -297,7 +306,9 @@ const UrlHelper = ({
                     name="blur"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Blur Sigma</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Blur Sigma
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
@@ -321,7 +332,9 @@ const UrlHelper = ({
                     name="sharpen"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sharpen Sigma</FormLabel>
+                        <FormLabel className="text-sm text-primary/90">
+                          Sharpen Sigma
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
@@ -344,8 +357,10 @@ const UrlHelper = ({
                     control={form.control}
                     name="grayscale"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col space-y-1 items-start">
-                        <FormLabel>Grayscale</FormLabel>
+                      <FormItem className="flex flex-col space-y-1 items-start justify-between">
+                        <FormLabel className="text-sm text-primary/90">
+                          Grayscale
+                        </FormLabel>
                         <FormControl>
                           <Switch
                             checked={field.value}

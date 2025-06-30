@@ -5,22 +5,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
 import { auth } from "@/lib/auth";
+import { CircleQuestionMarkIcon } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import GenerateAltButton from "./_components/generate-alt-button";
 import RegenerateAltButton from "./_components/regenerate -alt-button";
-import { Button } from "@/components/ui/button";
-import {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-} from "@/components/ui/hover-card";
-import { CircleQuestionMarkIcon } from "lucide-react";
-import AskAI from "./_components/ask-ai";
 import UrlHelper from "./_components/url-helper";
 
 interface ImagePublicIdPageProps {
@@ -41,14 +39,12 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
   if (workspaceInfo?.userId !== session.user.id) {
     redirect("/login");
   }
-
   const image = await db.query.image.findFirst({
     where: (img, { eq }) => eq(img.publicId, imagePublicId),
   });
   if (!image || image === null) {
     redirect(`/${workspaceId}`);
   }
-  console.log("IMAGESSSSS", image);
   const originalImg = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspaceInfo.publicId}/${image.publicId}/og`;
   const compressedImg = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspaceInfo.publicId}/${image.publicId}`;
   const toMB = (bytes: number) => (bytes / 1_000_000).toFixed(2);
@@ -56,6 +52,7 @@ const ImagePublicIdPage = async ({ params }: ImagePublicIdPageProps) => {
   const savedPercent = ((savedBytes / image.originalSize!) * 100).toFixed(1);
   const onFlyUrl = `https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/image/${workspaceInfo.publicId}/${image.publicId}`;
   // const onFlyUrlLocal = `http://localhost:3001/image/${workspaceInfo.publicId}/${image.publicId}`;
+
   return (
     <div className="flex flex-col w-full h-full space-y-10 max-w-5xl mx-auto px-[5vw]">
       <div className="flex flex-col space-y-10">
