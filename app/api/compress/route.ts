@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+const baseUrl = process.env.LAMBDA_BASE_URL!;
+
 export async function POST(request: Request) {
   try {
     //console.log("COMPRESS STEP 1");
@@ -22,22 +24,12 @@ export async function POST(request: Request) {
     if (!apiKey) {
       return NextResponse.json({ error: "Missing API key" }, { status: 500 });
     }
-    const baseUrl = process.env.LAMBDA_BASE_URL!;
-    if (!baseUrl) {
-      return NextResponse.json(
-        { error: "Something went wrong" },
-        { status: 500 }
-      );
-    }
 
-    const upstreamRes = await fetch(
-      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/compress",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-api-key": apiKey },
-        body: JSON.stringify({ key, workspaceId, imgType }),
-      }
-    );
+    const upstreamRes = await fetch(`${baseUrl}/compress`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": apiKey },
+      body: JSON.stringify({ key, workspaceId, imgType }),
+    });
     //console.log("COMPRESS STEP 3");
     const data = await upstreamRes.json();
     //console.log("UPSTREAM DATA", data);

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+const baseUrl = process.env.LAMBDA_BASE_URL!;
+
 export async function POST(request: Request) {
   try {
     const { filename, contentType } = await request.json();
@@ -14,7 +16,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing API key" }, { status: 500 });
     }
     const upstreamRes = await fetch(
-      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign-free",
+      `${baseUrl}/presign-free`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-api-key": apiKey },

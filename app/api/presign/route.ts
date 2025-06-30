@@ -2,6 +2,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+const baseUrl = process.env.LAMBDA_BASE_URL!;
+
+
 export async function POST(request: Request) {
   try {
     const { filename, contentType, userId, workspaceId } = await request.json();
@@ -22,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 400 });
     }
     const upstreamRes = await fetch(
-      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/presign",
+      `${baseUrl}/presign`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-api-key": apiKey },

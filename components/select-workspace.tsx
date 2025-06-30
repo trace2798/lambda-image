@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useParams, useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 export type Workspace = {
   id: string;

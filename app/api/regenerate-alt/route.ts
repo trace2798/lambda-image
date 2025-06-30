@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+const baseUrl = process.env.LAMBDA_BASE_URL!;
+
 export async function POST(request: Request) {
   const { imagePublicId, instruction } = await request.json();
 
@@ -21,7 +23,7 @@ export async function POST(request: Request) {
 
   try {
     const upstream = await fetch(
-      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate-instruction",
+      `${baseUrl}/generate-instruction`,
       {
         method: "POST",
         headers: {

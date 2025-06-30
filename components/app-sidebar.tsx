@@ -20,6 +20,7 @@ import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import UserAccountNav from "./user-account-nav";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export async function AppSidebar({
   ...props
@@ -58,6 +59,13 @@ export async function AppSidebar({
         <Separator />
         <Label className="text-primary/80">Current Workspace</Label>
         <SelectWorkspace workspaces={workspaces as Workspace[]} />
+        <Button
+          variant={"ghost"}
+          size={"sm"}
+          className="border text-primary/80 hover:text-primary"
+        >
+          <Link href={"/dashboard"}> + Create new Workspace</Link>
+        </Button>
         <Separator />
       </SidebarHeader>
       <SidebarContent className="flex flex-col items-center pt-3 px-[1vw]">

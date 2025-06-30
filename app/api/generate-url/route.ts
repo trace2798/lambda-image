@@ -2,6 +2,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
+const baseUrl = process.env.LAMBDA_BASE_URL!;
+
+
 export async function POST(request: Request) {
   const { query, baseUrl, dimensions } = await request.json();
 
@@ -20,7 +23,7 @@ export async function POST(request: Request) {
   }
   try {
     const upstream = await fetch(
-      "https://y0roytbax0.execute-api.ap-south-1.amazonaws.com/dev/generate-url",
+      `${baseUrl}/generate-url`,
       {
         method: "POST",
         headers: {
