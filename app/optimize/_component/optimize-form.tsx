@@ -143,15 +143,16 @@ const OptimizeForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("VALUES:", values);
     setResult(null);
-    const { key, url: uploadUrl } = await fetch("/api/presign-free", {
+    const preSignFreeRes = await fetch("/api/presign-free", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         filename: files[0].name,
         contentType: files[0].type,
       }),
-    }).then((r) => r.json());
-
+    });
+    const { key, url: uploadUrl } = await preSignFreeRes.json();
+    console.log("PRESIGNED RESPONSE", key, uploadUrl);
     await fetch(uploadUrl, {
       method: "PUT",
       headers: { "Content-Type": files[0].type },
