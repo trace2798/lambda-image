@@ -251,6 +251,8 @@ const UrlHelper = ({
                               <SelectItem value="cover">cover</SelectItem>
                               <SelectItem value="contain">contain</SelectItem>
                               <SelectItem value="fill">fill</SelectItem>
+                              <SelectItem value="inside">inside</SelectItem>
+                              <SelectItem value="outside">outside</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>

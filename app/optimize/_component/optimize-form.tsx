@@ -159,17 +159,37 @@ const OptimizeForm = () => {
       body: files[0],
     });
 
+    // const transforms: string[] = [];
+    // if (values.grayscale) transforms.push("grayscale");
+    // transforms.push(`format=${values.format}`);
+    // if (values.crop) transforms.push(`crop=${values.crop}`);
+    // if (values.gravity) transforms.push(`gravity=${values.gravity}`);
+    // if (values.width) transforms.push(`width=${values.width}`);
+    // if (values.height) transforms.push(`height=${values.height}`);
+    // if (values.blur) transforms.push(`blur=${values.blur}`);
+    // if (values.sharpen) transforms.push(`sharpen=${values.sharpen}`);
+    // const transformsRaw = transforms.join(",");
     const transforms: string[] = [];
     if (values.grayscale) transforms.push("grayscale");
     transforms.push(`format=${values.format}`);
+
     if (values.crop) transforms.push(`crop=${values.crop}`);
     if (values.gravity) transforms.push(`gravity=${values.gravity}`);
-    if (values.width) transforms.push(`width=${values.width}`);
-    if (values.height) transforms.push(`height=${values.height}`);
-    if (values.blur) transforms.push(`blur=${values.blur}`);
-    if (values.sharpen) transforms.push(`sharpen=${values.sharpen}`);
-    const transformsRaw = transforms.join(",");
 
+    if (typeof values.width === "number" && Number.isFinite(values.width)) {
+      transforms.push(`width=${values.width}`);
+    }
+    if (typeof values.height === "number" && Number.isFinite(values.height)) {
+      transforms.push(`height=${values.height}`);
+    }
+    if (typeof values.blur === "number" && Number.isFinite(values.blur)) {
+      transforms.push(`blur=${values.blur}`);
+    }
+    if (typeof values.sharpen === "number" && Number.isFinite(values.sharpen)) {
+      transforms.push(`sharpen=${values.sharpen}`);
+    }
+    const transformsRaw = transforms.join(",");
+    console.log("TRANSFORM RAW", transformsRaw);
     const transformRes = await fetch("/api/transform-free", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -440,13 +460,21 @@ const OptimizeForm = () => {
                           <FormItem>
                             <FormLabel>Sharpen Sigma</FormLabel>
                             <FormControl>
-                              <Input
+                              {/* <Input
                                 type="number"
                                 step="0.000001"
                                 min={0.000001}
                                 max={10}
                                 {...field}
                                 value={field.value ?? ""}
+                                className="w-full max-w-[200px]"
+                              /> */}
+                              <Input
+                                type="number"
+                                step="0.000001"
+                                min={0.000001}
+                                max={10}
+                                {...field}
                                 className="w-full max-w-[200px]"
                               />
                             </FormControl>
